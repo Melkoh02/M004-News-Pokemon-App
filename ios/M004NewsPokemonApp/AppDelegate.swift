@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
 
     factory.startReactNative(
-      withModuleName: "M001",
+      withModuleName: "M004NewsPokemonApp",
       in: window,
       launchOptions: launchOptions
     )

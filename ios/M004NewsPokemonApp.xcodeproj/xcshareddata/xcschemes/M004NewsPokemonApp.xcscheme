@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "M001.app"
-               BlueprintName = "M001"
-               ReferencedContainer = "container:M001.xcodeproj">
+               BuildableName = "M004NewsPokemonApp.app"
+               BlueprintName = "M004NewsPokemonApp"
+               ReferencedContainer = "container:M004NewsPokemonApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "M001Tests.xctest"
-               BlueprintName = "M001Tests"
-               ReferencedContainer = "container:M001.xcodeproj">
+               BuildableName = "M004NewsPokemonAppTests.xctest"
+               BlueprintName = "M004NewsPokemonAppTests"
+               ReferencedContainer = "container:M004NewsPokemonApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "M001.app"
-            BlueprintName = "M001"
-            ReferencedContainer = "container:M001.xcodeproj">
+            BuildableName = "M004NewsPokemonApp.app"
+            BlueprintName = "M004NewsPokemonApp"
+            ReferencedContainer = "container:M004NewsPokemonApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "M001.app"
-            BlueprintName = "M001"
-            ReferencedContainer = "container:M001.xcodeproj">
+            BuildableName = "M004NewsPokemonApp.app"
+            BlueprintName = "M004NewsPokemonApp"
+            ReferencedContainer = "container:M004NewsPokemonApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

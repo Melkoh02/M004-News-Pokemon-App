@@ -16,7 +16,7 @@ class MainActivity : ReactActivity() {
   }
 
   /** Must match your app name in index.js */
-  override fun getMainComponentName(): String = "M001"
+  override fun getMainComponentName(): String = "M004NewsPokemonApp"
 
   /**
    * Use the default delegate (with Fabric toggle)
