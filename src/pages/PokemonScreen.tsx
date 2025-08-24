@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
@@ -11,23 +11,66 @@ import {buildPokemonImageUrl} from '../lib/helpers/buildPokemonImageUrl.ts';
 import PokemonCard from '../components/organisms/pokemonCard.tsx';
 import {Pokemon} from '../lib/types/pokemon.ts';
 
+const PAGE_SIZE = 20;
+
 export default function PokemonScreen() {
   const theme = useTheme();
   const {t} = useTranslation();
-  const [data, setData] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState(false);
   const api = useApi();
 
-  const listPokemon = () => {
-    setLoading(true);
-    api.listPokemon().handle({
-      onSuccess: res => {
-        setData(res.results);
-      },
-      errorMessage: t('snackBarMessages.listPokemonError'),
-      onFinally: () => setLoading(false),
-    });
-  };
+  const [data, setData] = useState<Pokemon[]>([]);
+  const [initialLoading, setInitialLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [hasNext, setHasNext] = useState(true);
+
+  // guard to avoid multiple onEndReached fires during momentum
+  const canLoadMoreRef = useRef(true);
+
+  // Fetch a specific page
+  const fetchPage = useCallback(
+    ({offset: off, append}: {offset: number; append: boolean}) => {
+      append ? setLoadingMore(true) : setInitialLoading(true);
+
+      api.listPokemon({limit: PAGE_SIZE, offset: off}).handle({
+        onSuccess: res => {
+          const moreComing = Boolean(res.next);
+          setHasNext(moreComing);
+
+          setData(prev => (append ? [...prev, ...res.results] : res.results));
+          setOffset(off + PAGE_SIZE); // advance for the next call
+        },
+        errorMessage: t('snackBarMessages.listPokemonError'),
+        onFinally: () => {
+          setInitialLoading(false);
+          setLoadingMore(false);
+          setRefreshing(false);
+          canLoadMoreRef.current = true;
+        },
+      });
+    },
+    [api, t],
+  );
+
+  // initial load — runs once
+  useEffect(() => {
+    fetchPage({offset: 0, append: false});
+  }, [fetchPage]);
+
+  const onRefresh = useCallback(() => {
+    if (initialLoading || loadingMore) return;
+    setRefreshing(true);
+    // reset back to first page
+    fetchPage({offset: 0, append: false});
+  }, [fetchPage, initialLoading, loadingMore]);
+
+  const loadMore = useCallback(() => {
+    if (!hasNext || initialLoading || loadingMore || refreshing) return;
+    if (!canLoadMoreRef.current) return;
+    canLoadMoreRef.current = false;
+    fetchPage({offset, append: true});
+  }, [fetchPage, hasNext, initialLoading, loadingMore, refreshing, offset]);
 
   const pokemons = useMemo(() => {
     return data.map(p => {
@@ -36,21 +79,19 @@ export default function PokemonScreen() {
         title: capitalizeString(p.name),
         description: `Pokédex #${id ?? '—'}`,
         url: buildPokemonImageUrl(id),
-        _id: id,
+        _id: id ?? p.name,
       };
     });
   }, [data]);
-
-  useEffect(() => {
-    listPokemon();
-  }, []);
 
   return (
     <>
       <MainSearchBar />
       <View
         style={{...styles.container, backgroundColor: theme.colors.background}}>
-        {data.length > 0 ? (
+        {initialLoading && data.length === 0 ? (
+          <ActivityIndicator size={25} style={{paddingTop: 20}} />
+        ) : (
           <FlatList
             data={pokemons}
             numColumns={2}
@@ -63,9 +104,21 @@ export default function PokemonScreen() {
               />
             )}
             contentContainerStyle={{padding: 16}}
+            onEndReached={loadMore}
+            onEndReachedThreshold={0.5}
+            onMomentumScrollBegin={() => {
+              canLoadMoreRef.current = true;
+            }}
+            ListFooterComponent={
+              loadingMore ? (
+                <ActivityIndicator size={20} style={{paddingVertical: 16}} />
+              ) : null
+            }
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            // optional perf: avoids early extra calls when list is short
+            removeClippedSubviews
           />
-        ) : (
-          <ActivityIndicator size={25} style={{paddingTop: 20}} />
         )}
       </View>
     </>
