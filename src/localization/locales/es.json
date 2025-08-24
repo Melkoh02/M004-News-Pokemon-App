@@ -1,0 +1,79 @@
+{
+ "appName": "M001",
+ "greeting": "¡Bienvenido, {{name}}!",
+ "common": {
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "yes": "Si",
+  "no": "No",
+  "continue": "Continuar",
+  "search": "Buscar"
+ },
+ "tabNavigator": {
+  "home": "Inicio",
+  "settings": "Configuraciones"
+ },
+ "login": {
+  "title": "Ingresar",
+  "loginButton": "Ingresar",
+  "email": "Correo",
+  "emailPlaceholder": "Correo",
+  "password": "Contraseña",
+  "passwordPlaceholder": "Contraseña",
+  "forgotPassword": "Olvidaste tu contraseña?",
+  "noAccount": "No tienes una cuenta aun?"
+ },
+ "signUp": {
+  "title": "Registrarse",
+  "signUpButton": "Registrarse",
+  "email": "Correo",
+  "password": "Contraseña",
+  "passwordPlaceholder": "Password",
+  "confirmPassword": "Confirmar Contraseña",
+  "confirmPasswordPlaceholder": "Confirmar Contraseña",
+  "backToLogin": "Ya tienes una cuenta?"
+ },
+ "forgotPassword": {
+  "title": "Recuperar Contraseña",
+  "email": "Correo",
+  "submitButton": "Enviar link de recuperacion",
+  "backToLogin": "Voler a Ingresar"
+ },
+ "home": {
+  "title": "Pantalla de Inicio"
+ },
+ "settings": {
+  "title": "Pantalla de Configuraciones",
+  "language": "Idioma",
+  "switchLanguage": "Cambiar Idioma",
+  "toggleTheme": "Cambia Tema",
+  "logout": "Cerrar Sesion"
+ },
+ "drawer": {
+  "preferences": "Preferencias",
+  "darkTheme": "Modo Oscuro",
+  "language": "Language"
+ },
+ "modals": {
+  "userAccount": {
+   "title": "M001"
+  },
+  "selectLanguageModal": {
+   "title": "Seleccionar Idioma",
+   "placeholder": "Seleccionar Idioma",
+   "languages": {
+    "en": "Inglés",
+    "es": "Español"
+   }
+  }
+ },
+ "snackBarMessages": {
+  "networkError": "Error de red. Por favor, comprueba tu conexión o contacta con soporte",
+  "loginError": "No se pudo iniciar sesión, inténtalo de nuevo más tarde",
+  "loginSuccess": "¡Sesión iniciada! :D"
+ },
+ "backendRes": {
+  "successLogin": "Sesion iniciada! :D",
+  "badReqLogin": "Email o Contraseña incorrecta, vuelva a intentar"
+ }
+}

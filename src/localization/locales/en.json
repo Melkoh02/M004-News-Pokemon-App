@@ -1,0 +1,78 @@
+{
+ "appName": "M001",
+ "greeting": "Welcome, {{name}}!",
+ "common": {
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "yes": "Yes",
+  "no": "No",
+  "continue": "Continue",
+  "search": "Search"
+ },
+ "tabNavigator": {
+  "home": "Home",
+  "settings": "Settings"
+ },
+ "login": {
+  "title": "Login",
+  "loginButton": "Log in",
+  "email": "Email",
+  "emailPlaceholder": "Email",
+  "password": "Password",
+  "passwordPlaceholder": "Password",
+  "forgotPassword": "Forgot password?",
+  "noAccount": "Don't have an account?"
+ },
+ "signUp": {
+  "title": "Sign Up",
+  "signUpButton": "Sign Up",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordPlaceholder": "Confirm Password",
+  "backToLogin": "Already have an account?"
+ },
+ "forgotPassword": {
+  "title": "Reset Password",
+  "email": "Email",
+  "submitButton": "Send reset link",
+  "backToLogin": "Back to Login"
+ },
+ "home": {
+  "title": "Home Screen"
+ },
+ "settings": {
+  "title": "Settings Screen",
+  "language": "Language",
+  "switchLanguage": "Switch Language",
+  "toggleTheme": "Toggle Theme",
+  "logout": "Log Out"
+ },
+ "drawer": {
+  "preferences": "Preferences",
+  "darkTheme": "Dark Theme",
+  "language": "Language"
+ },
+ "modals": {
+  "userAccount": {
+   "title": "M001"
+  },
+  "selectLanguageModal": {
+   "title": "Select Language",
+   "placeholder": "Select Language",
+   "languages": {
+    "en": "English",
+    "es": "Spanish"
+   }
+  }
+ },
+ "snackBarMessages": {
+  "networkError": "Network error. Please check your connection or contact support",
+  "loginError": "Could not log in, try again later",
+  "loginSuccess": "Logged in! :D"
+ },
+ "backendRes": {
+  "successLogin": "Logged in! :D",
+  "badReqLogin": "Incorrect Email or Password, please try again"
+ }
+}

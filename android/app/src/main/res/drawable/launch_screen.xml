@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Full-screen black background -->
+    <item android:drawable="@android:color/black"/>
+
+    <!-- Scale your splash image to 100% of the parent -->
+    <item>
+        <scale
+                android:drawable="@drawable/screen"
+                android:scaleGravity="center"
+                android:useIntrinsicSizeAsMinimum="false"
+                android:scaleWidth="100%p"
+                android:scaleHeight="100%p"/>
+    </item>
+</layer-list>
