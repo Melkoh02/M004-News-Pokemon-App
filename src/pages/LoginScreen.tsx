@@ -56,7 +56,7 @@ export default function LoginScreen() {
       access: 'guest',
       refresh: 'guest',
       user: {
-        id: 1,
+        id: 0,
         email: 'guest',
         username: 'guest',
         name: 'guest',

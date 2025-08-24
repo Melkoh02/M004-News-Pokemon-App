@@ -1,279 +1,34 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import {useTheme} from '../lib/hooks/useAppTheme.ts';
 import {useTranslation} from 'react-i18next';
-import MainSearchBar from '../components/molecules/searchBar.tsx';
 import useApi from '../lib/hooks/useApi.ts';
+import MainSearchBar from '../components/molecules/searchBar.tsx';
 import NewsCard from '../components/organisms/newsCard.tsx';
+import {Article} from '../lib/types/article.ts';
 
 export default function NewsScreen() {
   const theme = useTheme();
   const {t} = useTranslation();
+  const [data, setData] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(false);
   const api = useApi();
 
-  const useDummyData = () => {
-    return useMemo(
-      () => [
-        {
-          source: {id: 'politico', name: 'Politico'},
-          author: 'Jeremy B. White',
-          title:
-            'Independent redistricting champion spends millions against California gerrymander - Politico',
-          description:
-            'Big money is pouring into California’s redistricting battle.',
-          url: 'https://www.politico.com/news/2025/08/22/charles-munger-donation-california-gerrymander-00521479',
-          urlToImage:
-            'https://www.politico.com/dims4/default/resize/1200/quality/90/format/jpg?url=https%3A%2F%2Fstatic.politico.com%2F50%2Fa6%2F6b8d4a43412b8ca080891e6c8b32%2Felection-2026-redistricting-20388.jpg',
-          publishedAt: '2025-08-23T00:16:44Z',
-          content:
-            'Californias campaign will be a nationalized referendum on President Donald Trump, with Gov. Gavin Newsom and allies framing it as Democrats best chance to thwart the presidents agenda by flipping con… [+944 chars]',
-        },
-        {
-          source: {id: 'bloomberg', name: 'Bloomberg'},
-          author: 'Josh Wingrove, Joe Deaux, Dina Bass, Liana Baker',
-          title:
-            'Trump Says Intel Has Agreed to Give the US a 10% Equity Stake - Bloomberg.com',
-          description:
-            'President Donald Trump sealed a deal that gives the US government a nearly 10% stake in Intel Corp., part of an unconventional bid to reinvigorate the beleaguered company and boost domestic chip manufacturing.',
-          url: 'https://www.bloomberg.com/news/articles/2025-08-22/trump-poised-to-unveil-intel-deal-for-equity-stake-on-friday',
-          urlToImage:
-            'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iKHkgSxtzD3c/v0/1200x800.jpg',
-          publishedAt: '2025-08-22T23:38:21Z',
-          content:
-            'President Donald Trump sealed a deal that gives the US government a nearly 10% stake in Intel Corp., part of an unconventional bid to reinvigorate the beleaguered company and boost domestic chip manu… [+429 chars]',
-        },
-        {
-          source: {id: 'the-washington-post', name: 'The Washington Post'},
-          author: 'Warren P. Strobel, Noah Robertson, Dan Lamothe',
-          title:
-            'Hegseth fires head of Defense Intelligence Agency, Lt. Gen. Jeffrey Kruse - The Washington Post',
-          description:
-            'Secretary of Defense Pete Hegseth has fired Lt. Gen. Jeffrey Kruse, director of the Defense Intelligence Agency, the latest national security senior officer to be purged.',
-          url: 'https://www.washingtonpost.com/national-security/2025/08/22/defense-intelligence-agency-kruse-fired-hegseth/',
-          urlToImage:
-            'https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/OIK5NFDXJEUQCNY4D7CNXRVD7U.JPG&w=1440',
-          publishedAt: '2025-08-22T23:36:20Z',
-          content:
-            'Secretary of Defense Pete Hegseth has fired Lt. Gen. Jeffrey Kruse, director of the Defense Intelligence Agency, the latest senior military or intelligence officer to lose his position in a wider pur… [+92 chars]',
-        },
-        {
-          source: {id: null, name: 'NBCSports.com'},
-          author: 'Mike Florio',
-          title:
-            "Jerry Jones makes a ridiculous comment about Micah Parsons (even by Jerry's usual standards) - NBC Sports",
-          description: 'Cowboys owner and G.M.',
-          url: 'https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/jerry-jones-makes-a-ridiculous-comment-about-micah-parsons-even-by-jerrys-usual-standards',
-          urlToImage:
-            'https://nbcsports.brightspotcdn.com/dims4/default/70a473f/2147483647/strip/true/crop/7019x3948+0+365/resize/1440x810!/quality/90/?url=https%3A%2F%2Fnbc-sports-production-nbc-sports.s3.us-east-1.amazonaws.com%2Fbrightspot%2F0f%2Fdf%2F6ca21f09487f8c2d581ba4ea2525%2Fhttps-api-imagn.com%2Frest%2Fdownload%2FimageID%3D26865754',
-          publishedAt: '2025-08-22T23:17:47Z',
-          content:
-            'Cowboys owner and G.M. Jerry Jones is capable of being, in equal measures, magnetic and repugnant. When it comes to linebacker Micah Parsons, Jerry has recently been more repugnant than magnetic.\r\nJo… [+1138 chars]',
-        },
-        {
-          source: {id: 'abc-news', name: 'ABC News'},
-          author: 'ABC News',
-          title:
-            'Ghislaine Maxwell provided no incriminating information during meetings with deputy AG on high-profile individuals who interacted with Jeffrey Epstein, transcript shows - ABC News',
-          description: null,
-          url: 'https://abcnews.go.com/US/ghislaine-maxwell-provided-no-incriminating-information-meetings-deputy-ag/story?id=124894271',
-          urlToImage: null,
-          publishedAt: '2025-08-22T23:15:26Z',
-          content: null,
-        },
-        {
-          source: {id: null, name: 'Hollywood Reporter'},
-          author: 'Ethan Millman',
-          title:
-            'Lil Nas X to Remain Jailed Through the Weekend Following Arrest and Hospitalization - The Hollywood Reporter',
-          description:
-            "Authorities say he'll remain behind bars until Monday, and a source close to the rapper tells The Hollywood Reporter that he hasn't been allowed visitors yet.",
-          url: 'http://www.hollywoodreporter.com/music/music-news/lil-nas-x-to-remain-jailed-after-arrest-and-hospitalization-1236351439/',
-          urlToImage:
-            'https://www.hollywoodreporter.com/wp-content/uploads/2025/08/GettyImages-2207272763-H-2025.jpg?w=1296&h=730&crop=1',
-          publishedAt: '2025-08-22T22:11:11Z',
-          content:
-            'Lil Nas X will be jailed through the weekend following his arrest early Thursday morning, a representative for the Los Angeles Police Department confirms to The Hollywood Reporter, after the rapper w… [+1831 chars]',
-        },
-        {
-          source: {id: 'abc-news', name: 'ABC News'},
-          author: 'ROD MCGUIRK Associated Press',
-          title:
-            'Doctor accused of secretly recording 4,500 videos in Australian hospital restrooms released on bail - ABC News',
-          description:
-            'A trainee surgeon in Australia has been released on bail after being charged with secretly recording hundreds of medical colleagues in hospital restrooms',
-          url: 'https://abcnews.go.com/Health/wireStory/doctor-accused-secretly-recording-4500-videos-australian-hospital-124871457',
-          urlToImage:
-            'https://i.abcnewsfe.com/a/b93c02ed-251a-4a38-8c32-887f21b647a4/wirestory_559d6b8475d3128c9c48fa8c3584f34d_16x9.jpg?w=1600',
-          publishedAt: '2025-08-22T21:58:22Z',
-          content:
-            'MELBOURNE, Australia -- A trainee surgeon was released from custody on bail Friday after he was charged with secretly video recording hundreds of medical colleagues in the restrooms of Australian hos… [+2080 chars]',
-        },
-        {
-          source: {id: 'cnn', name: 'CNN'},
-          author: 'Deidre McPhillips',
-          title:
-            'Another major medical association breaks from CDC as ob/gyn group recommends Covid-19 vaccines during pregnancy - CNN',
-          description:
-            'The American College of Obstetricians and Gynecologists on Friday reaffirmed support for Covid-19 vaccination during pregnancy...',
-          url: 'https://www.cnn.com/2025/08/22/health/covid-vaccine-pregnancy-acog-recommendations',
-          urlToImage:
-            'https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-186366120.jpg?c=16x9&q=w_800,c_fill',
-          publishedAt: '2025-08-22T21:31:00Z',
-          content:
-            'See all topics\r\nThe American College of Obstetricians and Gynecologists on Friday reaffirmed support...',
-        },
-        {
-          source: {id: null, name: 'CNBC'},
-          author: 'Michele Luhn',
-          title:
-            'Trump says furniture tariffs are coming later this year - CNBC',
-          description:
-            'Stocks for some furniture and home goods companies, including Wayfair, RH and Williams-Sonoma, tumbled after the market close...',
-          url: 'https://www.cnbc.com/2025/08/22/trump-tariffs-furniture-trade.html',
-          urlToImage:
-            'https://image.cnbcfm.com/api/v1/image/108172431-17526141012025-07-15t211227z_334473751_rc26nfa9jpcp_rtrmadp_0_usa-economy.jpeg?v=1752614172&w=1920&h=1080',
-          publishedAt: '2025-08-22T21:17:41Z',
-          content:
-            'The Trump administration has launched an investigation into imported furniture, President Donald Trump said Friday, setting the stage for new tariffs on a wide range of products...',
-        },
-        {
-          source: {id: null, name: "Barron's"},
-          author:
-            'Karishma Vanjani, Martin Baccardax, Shaina Mishkin, Brian Swint',
-          title:
-            "Dow Marks First Record of Year After Powell's Jackson Hole Speech - Barron's",
-          description:
-            "The Dow, S&P 500, and Nasdaq soared after of Fed Chair Jerome Powell's speech at Jackson Hole.",
-          url: 'https://www.barrons.com/livecoverage/stock-market-news-today-082225',
-          urlToImage: 'https://images.barrons.com/im-783602/social',
-          publishedAt: '2025-08-22T21:01:00Z',
-          content:
-            'The Dow Jones Industrial Average marked a record close on Friday, its first in 2025...',
-        },
-        {
-          source: {id: 'politico', name: 'Politico'},
-          author: 'Aaron Pellish',
-          title:
-            'Trump says he may send National Guard to Chicago, New York - Politico',
-          description:
-            'The president said he is looking to continue sending troops to major cities after deployments in D.C. and Los Angeles.',
-          url: 'https://www.politico.com/news/2025/08/22/trump-national-guard-chicago-new-york-00519849',
-          urlToImage:
-            'https://www.politico.com/dims4/default/resize/1200/quality/90/format/jpg?url=https%3A%2F%2Fstatic.politico.com%2F70%2F04%2Fc35bff064e80aba91a1916996cf1%2Ftrump-35762.jpg',
-          publishedAt: '2025-08-22T20:47:20Z',
-          content:
-            'Trump later mentioned New York along with Chicago as cities hed like the National Guard to help...',
-        },
-        {
-          source: {id: null, name: "Investor's Business Daily"},
-          author: "REINHARDT KRAUSE, Investor's Business Daily",
-          title:
-            "Apple-Google Talks Heating Up Over Siri-Gemini IPhone Agreement? - Investor's Business Daily",
-          description:
-            'Google stock rose Friday amid a report Apple and Alphabet are in talks over a Gemini-Siri iPhone deal...',
-          url: 'https://www.investors.com/news/technology/google-stock-apple-stock-gemini-siri-iphone-agreement/',
-          urlToImage:
-            'https://www.investors.com/wp-content/uploads/2022/09/Stock-apple-green-Shutter.jpg',
-          publishedAt: '2025-08-22T20:40:00Z',
-          content:
-            'Apple (AAPL) and Google-parent Alphabet (GOOGL) are in talks again over the iPhone maker using the Gemini artificial intelligence model...',
-        },
-        {
-          source: {id: null, name: 'NPR'},
-          author: 'Nurith Aizenman',
-          title:
-            'Famine is declared in Gaza: What does it take to make this pronouncement? : Goats and Soda - NPR',
-          description:
-            'An announcement of famine — as has now happened regarding Gaza — is a complicated decision...',
-          url: 'https://www.npr.org/sections/goats-and-soda/2025/08/22/g-s1-84600/famine-is-declared-in-gaza-what-does-it-take-to-make-this-pronouncement',
-          urlToImage:
-            'https://npr.brightspotcdn.com/dims3/default/strip/false/crop/5760x3240+0+300/resize/1400/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fd4%2F58%2F3fe32fd1446a9d0a463fe54cc4c8%2Fgettyimages-2222144008.jpg',
-          publishedAt: '2025-08-22T20:31:10Z',
-          content:
-            'After weeks of rising concern about hunger in Gaza, a United Nations-backed panel has declared that famine is underway...',
-        },
-        {
-          source: {id: null, name: 'Deadline'},
-          author: 'Nellie Andreeva',
-          title:
-            "'Dexter: Resurrection' Season 2 Writers Room, 'Original Sin' Canceled - Deadline",
-          description:
-            "'Dexter' franchise reevaluated: 'Resurrection' moving on with Season 2 writers room commissioned. Prequel 'Original Sin' has been canceled.",
-          url: 'http://deadline.com/2025/08/dexter-resurrection-season-2-original-sin-canceled-showtime-1236495556/',
-          urlToImage:
-            'https://deadline.com/wp-content/uploads/2025/08/dexter-resurrection-original-sin.jpg?w=1024',
-          publishedAt: '2025-08-22T20:16:00Z',
-          content:
-            'Showtime‘s new leadership has made their first major programming decision...',
-        },
-        {
-          source: {id: null, name: 'Boing Boing'},
-          author: 'Ellsworth Toohey',
-          title:
-            'Scientists discover protein that turns young brains old - Boing Boing',
-          description:
-            'Scientists at UCSF found that a single protein called FTL1 can induce memory problems...',
-          url: 'https://boingboing.net/2025/08/22/scientists-discover-protein-that-turns-young-brains-old.html',
-          urlToImage:
-            'https://boingboing.net/wp-content/uploads/2022/05/brain.jpeg',
-          publishedAt: '2025-08-22T19:56:33Z',
-          content:
-            "When researchers increased levels of an iron-storing protein called FTL1 in young mice's brains...",
-        },
-        {
-          source: {id: null, name: 'Hollywood Reporter'},
-          author: 'Aaron Couch',
-          title:
-            '‘Nobody 2’ Producers David Leitch and Kelly McCormick Talk ‘Gears of War’ and Moving on From ‘Jurassic World’ - The Hollywood Reporter',
-          description:
-            'The 87North principals — and real-life married couple — reveal how they landed a new director just eight weeks before production...',
-          url: 'http://www.hollywoodreporter.com/movies/movie-features/nobody-2-duo-gears-of-war-1236347997/',
-          urlToImage:
-            'https://www.hollywoodreporter.com/wp-content/uploads/2025/08/GettyImages-2149880851-e1755887297644.jpg?w=1440&h=810&crop=1',
-          publishedAt: '2025-08-22T19:18:54Z',
-          content:
-            'David Leitch and Kelly McCormick know a thing or two about franchises...',
-        },
-        {
-          source: {id: 'ars-technica', name: 'Ars Technica'},
-          author: 'Stephen Clark',
-          title:
-            'US military’s X-37B spaceplane stays relevant with launch of another mission - Ars Technica',
-          description:
-            'The X-37B spaceplane is flying missions few would have foreseen when the program began.',
-          url: 'https://arstechnica.com/space/2025/08/spacex-boeing-team-up-for-another-flight-of-the-militarys-x-37b-spaceplane/',
-          urlToImage:
-            'https://cdn.arstechnica.net/wp-content/uploads/2025/08/f9_otv8_launch1-1152x648.jpg',
-          publishedAt: '2025-08-22T17:54:35Z',
-          content: null,
-        },
-        {
-          source: {id: null, name: 'KSL.com'},
-          author: 'Gina Park, CNN',
-          title:
-            "What's a black moon? Here's what to expect this weekend - KSL.com",
-          description:
-            'The black moon, occurring this weekend, is rare and invisible.',
-          url: 'https://www.ksl.com/article/51364312/whats-a-black-moon-heres-what-to-expect-this-weekend',
-          urlToImage:
-            'https://img.ksl.com/slc/3107/310707/31070700.jpg?filter=kslv2/responsive_story_lg',
-          publishedAt: '2025-08-22T17:46:52Z',
-          content:
-            'ATLANTA The moon goes by many names. August saw the full sturgeon moon...',
-        },
-      ],
-      [],
-    );
-  };
-
-  const articles = useDummyData();
-
   const getNews = () => {
+    setLoading(true);
     api.getTopHeadlines({country: 'us'}).handle({
-      onSuccess: data => console.log('news:', data),
+      onSuccess: res => {
+        setData(res.articles);
+      },
       errorMessage: t('snackBarMessages.getEverythingNewsError'),
+      onFinally: () => setLoading(false),
     });
   };
+
+  useEffect(() => {
+    getNews();
+  }, []);
 
   return (
     <>
@@ -283,18 +38,22 @@ export default function NewsScreen() {
           ...styles.container,
           backgroundColor: theme.colors.background,
         }}>
-        <FlatList
-          data={articles}
-          keyExtractor={(item, index) => item.url ?? index.toString()}
-          renderItem={({item}) => (
-            <NewsCard
-              title={item.title}
-              description={item.description}
-              url={item.urlToImage}
-            />
-          )}
-          contentContainerStyle={{padding: 16}}
-        />
+        {data.length > 0 ? (
+          <FlatList
+            data={data}
+            keyExtractor={(item, index) => item.url ?? index.toString()}
+            renderItem={({item}) => (
+              <NewsCard
+                title={item.title}
+                description={item.description}
+                url={item.urlToImage}
+              />
+            )}
+            contentContainerStyle={{padding: 16}}
+          />
+        ) : (
+          <ActivityIndicator size={25} style={{paddingTop: 20}} />
+        )}
       </View>
     </>
   );

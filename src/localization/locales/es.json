@@ -71,7 +71,9 @@
  "snackBarMessages": {
   "networkError": "Error de red. Por favor, comprueba tu conexión o contacta con soporte",
   "loginError": "No se pudo iniciar sesión, inténtalo de nuevo más tarde",
-  "loginSuccess": "¡Sesión iniciada! :D"
+  "loginSuccess": "¡Sesión iniciada! :D",
+  "getEverythingNewsError": "No se pudo obtener el listado de noticias, inténtalo de nuevo más tarde",
+  "listPokemonError": "No se pudo obtener el listado de Pokemones, inténtalo de nuevo más tarde"
  },
  "backendRes": {
   "successLogin": "Sesion iniciada! :D",
