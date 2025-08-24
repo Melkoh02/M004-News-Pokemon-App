@@ -1,5 +1,5 @@
 {
- "appName": "M001",
+ "appName": "M004NewsPokemon",
  "greeting": "¡Bienvenido, {{name}}!",
  "common": {
   "cancel": "Cancelar",
@@ -56,7 +56,7 @@
  },
  "modals": {
   "userAccount": {
-   "title": "M001"
+   "title": "M00$"
   },
   "selectLanguageModal": {
    "title": "Seleccionar Idioma",

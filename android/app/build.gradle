@@ -79,9 +79,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.m001"
+    namespace "com.m004.newspokemonapp"
     defaultConfig {
-        applicationId "com.m001"
+        applicationId "com.m004.newspokemonapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -1,4 +1,4 @@
-package com.m001
+package com.m004.newspokemonapp
 
 import android.os.Bundle
 import com.facebook.react.ReactActivity
