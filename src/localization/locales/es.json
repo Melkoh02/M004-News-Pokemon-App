@@ -21,7 +21,8 @@
   "password": "Contraseña",
   "passwordPlaceholder": "Contraseña",
   "forgotPassword": "Olvidaste tu contraseña?",
-  "noAccount": "No tienes una cuenta aun?"
+  "noAccount": "No tienes una cuenta aun?",
+  "continueAsGuest": "Continuar como Invitado"
  },
  "signUp": {
   "title": "Registrarse",

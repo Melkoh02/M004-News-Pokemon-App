@@ -49,6 +49,25 @@ export default function LoginScreen() {
     Keyboard.dismiss();
   };
 
+  const onContinuePress = () => {
+    // quick and dirty guest implementation, for demo only, a more robust
+    // implementation is needed for prod.
+    const guestData = {
+      access: 'guest',
+      refresh: 'guest',
+      user: {
+        id: 1,
+        email: 'guest',
+        username: 'guest',
+        name: 'guest',
+        description: 'guest',
+        birth_date: '1990-01-01',
+        is_active: true,
+      },
+    };
+    rootStore.userStore.setAuth(guestData);
+  };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -78,14 +97,24 @@ export default function LoginScreen() {
             label={t('login.password')}
             placeholder={t('login.passwordPlaceholder')}
           />
-          <Button
-            mode="contained"
-            onPress={onLoginPress}
-            loading={loading}
-            disabled={loading}
-            style={styles.button}>
-            {!loading && t('login.loginButton')}
-          </Button>
+          <View style={styles.actionsRow}>
+            <Button
+              mode="contained"
+              onPress={onLoginPress}
+              loading={loading}
+              disabled={loading}
+              style={[styles.button, styles.halfButton]}
+              contentStyle={styles.buttonContent}>
+              {!loading && t('login.loginButton')}
+            </Button>
+            <Button
+              mode="contained"
+              onPress={onContinuePress}
+              style={[styles.button, styles.halfButton, styles.rightButton]}
+              contentStyle={styles.buttonContent}>
+              {t('login.continueAsGuest')}
+            </Button>
+          </View>
         </View>
         <Button
           mode="text"
@@ -114,6 +143,20 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     paddingTop: '50%',
+  },
+  actionsRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    marginTop: 24,
+  },
+  halfButton: {
+    flex: 1,
+  },
+  rightButton: {
+    marginLeft: 12,
+  },
+  buttonContent: {
+    height: 48,
   },
   title: {
     fontWeight: '700',

@@ -21,7 +21,8 @@
   "password": "Password",
   "passwordPlaceholder": "Password",
   "forgotPassword": "Forgot password?",
-  "noAccount": "Don't have an account?"
+  "noAccount": "Don't have an account?",
+  "continueAsGuest": "Continue as Guest"
  },
  "signUp": {
   "title": "Sign Up",
