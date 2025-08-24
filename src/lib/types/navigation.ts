@@ -30,4 +30,5 @@ export type NewsStackParamList = {
 
 export type PokemonStackParamList = {
   Pokemon: undefined;
+  PokemonDetailScreen: {id: number};
 };

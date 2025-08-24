@@ -37,6 +37,7 @@ export class UserStore {
     this.user = user;
     AsyncStorage.setItem(
       USER_STORAGE_KEY,
+      // for demo only, auth tokens should be stored on react-native-keychain
       JSON.stringify({access, refresh, user}),
     ).catch(console.warn);
   }

@@ -34,8 +34,8 @@ export const getEverythingNews = (params: {
 }) => wrapRequest(newsClient.get('everything', {params}));
 
 // ---------- PokeAPI ----------
-export const getPokemon = (nameOrId: string | number) =>
-  wrapRequest(pokemonClient.get(`pokemon/${nameOrId}`));
+export const getPokemon = (id: number) =>
+  wrapRequest(pokemonClient.get(`pokemon/${id}`));
 
 export const listPokemon = (params?: {limit?: number; offset?: number}) =>
   wrapRequest(pokemonClient.get('pokemon', {params}));

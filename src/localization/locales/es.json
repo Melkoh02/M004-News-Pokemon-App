@@ -80,7 +80,8 @@
   "loginError": "No se pudo iniciar sesión, inténtalo de nuevo más tarde",
   "loginSuccess": "¡Sesión iniciada! :D",
   "getEverythingNewsError": "No se pudo obtener el listado de noticias, inténtalo de nuevo más tarde",
-  "listPokemonError": "No se pudo obtener el listado de Pokemones, inténtalo de nuevo más tarde"
+  "listPokemonError": "No se pudo obtener el listado de Pokemones, inténtalo de nuevo más tarde",
+  "detailPokemonError": "No se pudo obtener los detalles del Pokemon, inténtalo de nuevo más tarde"
  },
  "backendRes": {
   "successLogin": "Sesion iniciada! :D",

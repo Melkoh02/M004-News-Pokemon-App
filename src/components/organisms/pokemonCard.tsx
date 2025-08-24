@@ -3,12 +3,14 @@ import {Card, Text} from 'react-native-paper';
 import {PokemonCardProps} from '../../lib/types/pokemonCard.ts';
 
 export default function PokemonCard({
+  id,
   title,
   description,
   url,
+  onPress,
 }: PokemonCardProps) {
   return (
-    <Card style={styles.card}>
+    <Card style={styles.card} onPress={onPress}>
       <Card.Cover source={{uri: url ? url : 'https://picsum.photos/700'}} />
       <Card.Title
         title={title}

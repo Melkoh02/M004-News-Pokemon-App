@@ -10,6 +10,7 @@ import {capitalizeString} from '../lib/helpers/capitalizeString.ts';
 import {buildPokemonImageUrl} from '../lib/helpers/buildPokemonImageUrl.ts';
 import PokemonCard from '../components/organisms/pokemonCard.tsx';
 import {Pokemon} from '../lib/types/pokemon.ts';
+import {useNavigation} from '../lib/hooks/useNavigation.ts';
 
 const PAGE_SIZE = 20;
 
@@ -17,6 +18,7 @@ export default function PokemonScreen() {
   const theme = useTheme();
   const {t} = useTranslation();
   const api = useApi();
+  const navigation = useNavigation('PokemonStack');
 
   const [data, setData] = useState<Pokemon[]>([]);
   const [initialLoading, setInitialLoading] = useState(false);
@@ -79,7 +81,7 @@ export default function PokemonScreen() {
         title: capitalizeString(p.name),
         description: `Pokédex #${id ?? '—'}`,
         url: buildPokemonImageUrl(id),
-        _id: id ?? p.name,
+        id: id,
       };
     });
   }, [data]);
@@ -95,12 +97,18 @@ export default function PokemonScreen() {
           <FlatList
             data={pokemons}
             numColumns={2}
-            keyExtractor={(item, index) => String(item._id ?? index)}
+            keyExtractor={(item, index) => String(item.id ?? index)}
             renderItem={({item}) => (
               <PokemonCard
+                id={item.id}
                 title={item.title}
                 description={item.description}
                 url={item.url ?? null}
+                onPress={() => {
+                  if (item.id != null) {
+                    navigation.navigate('PokemonDetailScreen', {id: item.id});
+                  }
+                }}
               />
             )}
             contentContainerStyle={{padding: 16}}

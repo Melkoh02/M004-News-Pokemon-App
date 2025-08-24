@@ -79,7 +79,8 @@
   "loginError": "Could not log in, try again later",
   "loginSuccess": "Logged in! :D",
   "getEverythingNewsError": "Could not get the news, try again later",
-  "listPokemonError": "Could not get the Pokemon list, try again later"
+  "listPokemonError": "Could not get the Pokemon list, try again later",
+  "detailPokemonError": "Could not get the Pokemon's details, try again later"
  },
  "backendRes": {
   "successLogin": "Logged in! :D",
