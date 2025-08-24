@@ -53,7 +53,14 @@
  "drawer": {
   "preferences": "Preferencias",
   "darkTheme": "Modo Oscuro",
-  "language": "Language"
+  "language": "Language",
+  "links": {
+   "github": "GitHub",
+   "template": "Plantilla",
+   "contact": "Contacto",
+   "newsApi": "NewsAPI",
+   "pokeApi": "PokeAPI"
+  }
  },
  "modals": {
   "userAccount": {

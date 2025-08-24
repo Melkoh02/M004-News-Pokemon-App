@@ -52,7 +52,14 @@
  "drawer": {
   "preferences": "Preferences",
   "darkTheme": "Dark Theme",
-  "language": "Language"
+  "language": "Language",
+  "links": {
+   "github": "GitHub",
+   "template": "Template",
+   "contact": "Contact",
+   "newsApi": "NewsAPI",
+   "pokeApi": "PokeAPI"
+  }
  },
  "modals": {
   "userAccount": {

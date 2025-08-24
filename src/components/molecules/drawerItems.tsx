@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Linking} from 'react-native';
 import {
-  Badge,
   Button,
   Drawer,
   Switch,
@@ -19,40 +18,43 @@ export default function DrawerItems() {
   const {t} = useTranslation();
   const theme = useTheme();
   const {themeStore, userStore} = useStore();
-  const [drawerItemIndex, setDrawerItemIndex] = React.useState<number>(0);
   const [selectLanguageModalVisible, setSelectLanguageModalVisible] =
     React.useState<boolean>(false);
 
   const isDarkTheme = theme.scheme === 'dark';
 
-  const _setDrawerItem = (index: number) => setDrawerItemIndex(index);
+  const onOpen = (url: string) => Linking.openURL(url);
 
   const DrawerItemsData = [
     {
-      label: 'Inbox',
-      icon: 'inbox',
       key: 0,
-      right: () => <Text variant="labelLarge">44</Text>,
+      label: t('drawer.links.github'),
+      icon: 'github',
+      onPress: () => onOpen('https://github.com/Melkoh02/'),
     },
     {
-      label: 'Starred',
-      icon: 'star',
       key: 1,
-      right: ({color}: {color: string}) => (
-        <Badge
-          visible
-          size={8}
-          style={[styles.badge, {backgroundColor: color}]}
-        />
-      ),
+      label: t('drawer.links.template'),
+      icon: 'source-repository',
+      onPress: () => onOpen('https://github.com/Melkoh02/M001'),
     },
-    {label: 'Sent mail', icon: 'send', key: 2},
-    {label: 'Colored label', icon: 'palette', key: 3},
     {
-      label: 'A very long title that will be truncated',
-      icon: 'delete',
+      key: 2,
+      label: t('drawer.links.contact'),
+      icon: 'email',
+      onPress: () => onOpen('mailto:contact@melkoh.dev'),
+    },
+    {
+      key: 3,
+      label: t('drawer.links.newsApi'),
+      icon: 'newspaper-variant-outline',
+      onPress: () => onOpen('https://newsapi.org/docs'),
+    },
+    {
       key: 4,
-      right: () => <Badge visible size={8} style={styles.badge} />,
+      label: t('drawer.links.pokeApi'),
+      icon: 'pokeball',
+      onPress: () => onOpen('https://pokeapi.co/docs/v2'),
     },
   ];
 
@@ -65,22 +67,20 @@ export default function DrawerItems() {
         paddingTop: 0,
         paddingBottom: 0,
       }}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-between',
-        }}>
+      <View style={{flex: 1, justifyContent: 'space-between'}}>
         <View>
-          <Drawer.Section title="Example items">
-            {DrawerItemsData.map((props, index) => (
+          <Drawer.Section title={t('drawer.links.title', 'Links')}>
+            {DrawerItemsData.map(({key, ...item}, index) => (
               <Drawer.Item
-                {...props}
-                key={props.key}
-                active={drawerItemIndex === index}
-                onPress={() => _setDrawerItem(index)}
+                key={key}
+                {...item}
+                onPress={() => {
+                  item.onPress?.();
+                }}
               />
             ))}
           </Drawer.Section>
+
           <Drawer.Section title={t('drawer.preferences')}>
             <Drawer.Item
               icon={'earth'}
@@ -114,6 +114,7 @@ export default function DrawerItems() {
             {t('settings.logout')}
           </Button>
         </Drawer.Section>
+
         <SelectLanguageModal
           isVisible={selectLanguageModalVisible}
           onDismiss={() => setSelectLanguageModalVisible(false)}
