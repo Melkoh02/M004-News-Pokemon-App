@@ -1,8 +1,12 @@
 import {StyleSheet} from 'react-native';
 import {Card, Text} from 'react-native-paper';
-import {NewsCardProps} from '../../lib/types/newsCard.ts';
+import {PokemonCardProps} from '../../lib/types/pokemonCard.ts';
 
-export default function NewsCard({title, description, url}: NewsCardProps) {
+export default function PokemonCard({
+  title,
+  description,
+  url,
+}: PokemonCardProps) {
   return (
     <Card style={styles.card}>
       <Card.Cover source={{uri: url ? url : 'https://picsum.photos/700'}} />
@@ -23,14 +27,15 @@ export default function NewsCard({title, description, url}: NewsCardProps) {
 
 const styles = StyleSheet.create({
   card: {
+    flex: 1,
     margin: 8,
-    marginBottom: 12,
+    minWidth: '45%',
   },
   titleContainer: {
     marginTop: 8,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   descriptionContainer: {

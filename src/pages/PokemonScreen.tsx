@@ -3,10 +3,10 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {useTheme} from '../lib/hooks/useAppTheme.ts';
 import {useTranslation} from 'react-i18next';
 import MainSearchBar from '../components/molecules/searchBar.tsx';
-import NewsCard from '../components/organisms/newsCard.tsx';
 import {getPokemonIdFromUrl} from '../lib/helpers/getPokemonId.ts';
 import {capitalizeString} from '../lib/helpers/capitalizeString.ts';
 import {buildPokemonImageUrl} from '../lib/helpers/buildPokemonImageUrl.ts';
+import PokemonCard from '../components/organisms/pokemonCard.tsx';
 
 export default function PokemonScreen() {
   const theme = useTheme();
@@ -61,9 +61,10 @@ export default function PokemonScreen() {
         style={{...styles.container, backgroundColor: theme.colors.background}}>
         <FlatList
           data={pokemons}
+          numColumns={2}
           keyExtractor={(item, index) => String(item._id ?? index)}
           renderItem={({item}) => (
-            <NewsCard
+            <PokemonCard
               title={item.title}
               description={item.description}
               url={item.url ?? null}
