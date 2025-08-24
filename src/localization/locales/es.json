@@ -42,6 +42,7 @@
   "backToLogin": "Voler a Ingresar"
  },
  "pokemon": {
+  "searchBarPlaceHolder": "Buscar (pokeAPI no soporta busqueda)",
   "baseExperience": "XP Base",
   "height": "Altura",
   "weight": "Peso",
@@ -64,7 +65,7 @@
  "drawer": {
   "preferences": "Preferencias",
   "darkTheme": "Modo Oscuro",
-  "language": "Language",
+  "language": "Idioma",
   "links": {
    "github": "GitHub",
    "template": "Plantilla",

@@ -26,6 +26,7 @@ export default function PokemonScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [offset, setOffset] = useState(0);
   const [hasNext, setHasNext] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // guard to avoid multiple onEndReached fires during momentum
   const canLoadMoreRef = useRef(true);
@@ -35,8 +36,14 @@ export default function PokemonScreen() {
     ({offset: off, append}: {offset: number; append: boolean}) => {
       append ? setLoadingMore(true) : setInitialLoading(true);
 
+      // guard so that we don’t fetch if we’re in search mode
+      if (searchQuery.trim()) {
+        return;
+      }
+
       api.listPokemon({limit: PAGE_SIZE, offset: off}).handle({
         onSuccess: res => {
+          console.log('Api called!');
           const moreComing = Boolean(res.next);
           setHasNext(moreComing);
 
@@ -52,7 +59,7 @@ export default function PokemonScreen() {
         },
       });
     },
-    [api, t],
+    [api, t, searchQuery],
   );
 
   // initial load — runs once
@@ -86,16 +93,28 @@ export default function PokemonScreen() {
     });
   }, [data]);
 
+  // Filter only the currently loaded dataset (client-side)
+  const visiblePokemons = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return pokemons;
+    return pokemons.filter(p => p.title.toLowerCase().includes(q));
+  }, [pokemons, searchQuery]);
+
   return (
     <>
-      <MainSearchBar />
+      {/*pokeAPI does not support any kind of search! so search implementation is limited to current data*/}
+      <MainSearchBar
+        placeholder={t('pokemon.searchBarPlaceHolder')}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       <View
         style={{...styles.container, backgroundColor: theme.colors.background}}>
-        {initialLoading && data.length === 0 ? (
+        {initialLoading && data.length === 0 && !searchQuery ? (
           <ActivityIndicator size={25} style={{paddingTop: 20}} />
         ) : (
           <FlatList
-            data={pokemons}
+            data={visiblePokemons}
             numColumns={2}
             keyExtractor={(item, index) => String(item.id ?? index)}
             renderItem={({item}) => (
@@ -118,13 +137,12 @@ export default function PokemonScreen() {
               canLoadMoreRef.current = true;
             }}
             ListFooterComponent={
-              loadingMore ? (
+              loadingMore && !searchQuery ? (
                 <ActivityIndicator size={20} style={{paddingVertical: 16}} />
               ) : null
             }
-            refreshing={refreshing}
+            refreshing={refreshing && !searchQuery}
             onRefresh={onRefresh}
-            // optional perf: avoids early extra calls when list is short
             removeClippedSubviews
           />
         )}

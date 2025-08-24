@@ -41,6 +41,7 @@
   "backToLogin": "Back to Login"
  },
  "pokemon": {
+  "searchBarPlaceHolder": "Search (Not supported by pokeAPI)",
   "baseExperience": "Base XP",
   "height": "Height",
   "weight": "Weight",
