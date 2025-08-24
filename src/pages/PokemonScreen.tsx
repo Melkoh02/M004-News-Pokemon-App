@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 import {useTheme} from '../lib/hooks/useAppTheme';
 
-const SettingsScreen = () => {
+const PokemonScreen = () => {
   const theme = useTheme();
   const {t} = useTranslation();
 
@@ -17,7 +17,7 @@ const SettingsScreen = () => {
   );
 };
 
-export default observer(SettingsScreen);
+export default observer(PokemonScreen);
 
 const styles = StyleSheet.create({
   container: {flex: 1, justifyContent: 'center', alignItems: 'center'},

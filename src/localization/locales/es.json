@@ -10,8 +10,8 @@
   "search": "Buscar"
  },
  "tabNavigator": {
-  "home": "Inicio",
-  "settings": "Configuraciones"
+  "home": "Noticas",
+  "settings": "Pokemones"
  },
  "login": {
   "title": "Ingresar",

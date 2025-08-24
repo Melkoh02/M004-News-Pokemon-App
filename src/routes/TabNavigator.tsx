@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeStack from './stacks/HomeStack';
-import SettingsStack from './stacks/SettingsStack';
+import NewsStack from './stacks/NewsStack.tsx';
+import PokemonStack from './stacks/PokemonStack.tsx';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {BottomNavigation} from 'react-native-paper';
 import {CommonActions} from '@react-navigation/native';
@@ -57,22 +57,22 @@ export default function TabNavigator() {
         />
       )}>
       <Tab.Screen
-        name="HomeTab"
-        component={HomeStack}
+        name="NewsTab"
+        component={NewsStack}
         options={{
           tabBarLabel: t('tabNavigator.home'),
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="article" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
-        name="SettingsTab"
-        component={SettingsStack}
+        name="PokemonTab"
+        component={PokemonStack}
         options={{
           tabBarLabel: t('tabNavigator.settings'),
           tabBarIcon: ({color, size}) => (
-            <Icon name="settings" color={color} size={size} />
+            <Icon name="catching-pokemon" color={color} size={size} />
           ),
         }}
       />

@@ -8,13 +8,13 @@ export type DrawerParamList = {
 };
 
 export type TabParamList = {
-  HomeTab: undefined;
-  SettingsTab: undefined;
+  NewsTab: undefined;
+  PokemonTab: undefined;
   // here goes bottom-tabs-only screens if added more in the future.
 };
 
 export type SearchBarNavProp = CompositeNavigationProp<
-  BottomTabNavigationProp<TabParamList, 'HomeTab'>,
+  BottomTabNavigationProp<TabParamList, 'NewsTab'>,
   DrawerNavigationProp<DrawerParamList>
 >;
 
@@ -24,10 +24,10 @@ export type AuthStackParamList = {
   ForgotPassword: undefined;
 };
 
-export type HomeStackParamList = {
-  Home: undefined;
+export type NewsStackParamList = {
+  News: undefined;
 };
 
-export type SettingsStackParamList = {
-  Settings: undefined;
+export type PokemonStackParamList = {
+  Pokemon: undefined;
 };
