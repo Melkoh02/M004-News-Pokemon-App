@@ -69,7 +69,8 @@
  "snackBarMessages": {
   "networkError": "Network error. Please check your connection or contact support",
   "loginError": "Could not log in, try again later",
-  "loginSuccess": "Logged in! :D"
+  "loginSuccess": "Logged in! :D",
+  "getEverythingNewsError": "Could not get the news, try again later"
  },
  "backendRes": {
   "successLogin": "Logged in! :D",

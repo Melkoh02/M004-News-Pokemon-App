@@ -1,14 +1,28 @@
-import axios, {AxiosError, AxiosHeaders, AxiosResponse} from 'axios';
+import axios, {
+  AxiosError,
+  AxiosHeaders,
+  AxiosInstance,
+  AxiosResponse,
+} from 'axios';
 import Config from 'react-native-config';
 import rootStore from '../lib/stores/rootStore.ts';
 import i18n from 'i18next';
 
-// --------------- Axios instance ---------------
-const client = axios.create({
-  baseURL: Config.API_BASE_URL,
-});
+// --------------- Multi-client setup ---------------
+export type Service = 'backend' | 'news' | 'pokemon';
 
-client.interceptors.request.use(
+function makeClient(baseURL?: string) {
+  return axios.create({baseURL});
+}
+
+const clients: Record<Service, AxiosInstance> = {
+  backend: makeClient(Config.API_BASE_URL_BACKEND),
+  news: makeClient(Config.API_BASE_URL_NEWS),
+  pokemon: makeClient(Config.API_BASE_URL_POKEMON),
+};
+
+// Attach per-service request interceptors
+clients.backend.interceptors.request.use(
   config => {
     const token = rootStore.userStore.accessToken;
     if (token) {
@@ -18,6 +32,23 @@ client.interceptors.request.use(
     }
     return config;
   },
+  error => Promise.reject(error),
+);
+
+clients.news.interceptors.request.use(
+  config => {
+    const headers = new AxiosHeaders(config.headers);
+    // NewsAPI requires `x-api-key`
+    headers.set('x-api-key', Config.API_KEY_NEWS);
+    config.headers = headers;
+    return config;
+  },
+  error => Promise.reject(error),
+);
+
+// PokeAPI needs no auth, but we keep the hook for future tweaks if needed
+clients.pokemon.interceptors.request.use(
+  config => config,
   error => Promise.reject(error),
 );
 
@@ -79,4 +110,11 @@ export function wrapRequest<T>(p: Promise<AxiosResponse<T>>) {
   return new RequestWrapper<T>(p);
 }
 
+// --------------- Exports ---------------
+// Back-compat: keep default export pointing to the backend client
+const client = clients.backend;
 export default client;
+
+// Named exports for other services
+export const newsClient = clients.news;
+export const pokemonClient = clients.pokemon;
