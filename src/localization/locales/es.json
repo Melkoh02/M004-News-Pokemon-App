@@ -7,7 +7,8 @@
   "yes": "Si",
   "no": "No",
   "continue": "Continuar",
-  "search": "Buscar"
+  "search": "Buscar",
+  "loading": "Cargando"
  },
  "tabNavigator": {
   "home": "Noticas",
@@ -39,6 +40,16 @@
   "email": "Correo",
   "submitButton": "Enviar link de recuperacion",
   "backToLogin": "Voler a Ingresar"
+ },
+ "pokemon": {
+  "baseExperience": "XP Base",
+  "height": "Altura",
+  "weight": "Peso",
+  "abilities": "Habilidades",
+  "stats": "Estadísticas Base (máx 255)",
+  "attack": "Ataque",
+  "defense": "Defensa",
+  "speed": "Velocidad"
  },
  "home": {
   "title": "Pantalla de Inicio"

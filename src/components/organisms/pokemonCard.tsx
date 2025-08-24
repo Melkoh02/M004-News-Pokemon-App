@@ -11,7 +11,10 @@ export default function PokemonCard({
 }: PokemonCardProps) {
   return (
     <Card style={styles.card} onPress={onPress}>
-      <Card.Cover source={{uri: url ? url : 'https://picsum.photos/700'}} />
+      <Card.Cover
+        source={{uri: url ? url : 'https://picsum.photos/700'}}
+        style={{backgroundColor: 'transparent'}}
+      />
       <Card.Title
         title={title}
         style={styles.titleContainer}

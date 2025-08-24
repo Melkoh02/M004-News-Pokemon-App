@@ -7,7 +7,8 @@
   "yes": "Yes",
   "no": "No",
   "continue": "Continue",
-  "search": "Search"
+  "search": "Search",
+  "loading": "Loading"
  },
  "tabNavigator": {
   "home": "News",
@@ -38,6 +39,16 @@
   "email": "Email",
   "submitButton": "Send reset link",
   "backToLogin": "Back to Login"
+ },
+ "pokemon": {
+  "baseExperience": "Base XP",
+  "height": "Height",
+  "weight": "Weight",
+  "abilities": "Abilities",
+  "stats": "Base Stats (max 255)",
+  "attack": "Attack",
+  "defense": "Defense",
+  "speed": "Speed"
  },
  "home": {
   "title": "Home Screen"
