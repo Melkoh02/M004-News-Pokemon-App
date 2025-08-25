@@ -42,7 +42,7 @@ const MainSearchBar: React.FC<MainSearchBarProps> = ({
         icon={'menu'}
         onIconPress={() => navigation.openDrawer()}
         right={props =>
-          focused ? (
+          focused || searchQuery.length > 0 ? (
             <IconButton
               {...props}
               icon="close"
