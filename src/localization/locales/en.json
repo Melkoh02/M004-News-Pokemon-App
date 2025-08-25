@@ -52,7 +52,10 @@
   "speed": "Speed"
  },
  "news": {
-  "searchBarPlaceHolder": "Search News"
+  "searchBarPlaceHolder": "Search News",
+  "minSearch": "Type at least {{count}} characters to search",
+  "noResultsSearch": "No news found for \"{{query}}\". Try a different search or continue typing.",
+  "emptyList": "No articles available"
  },
  "home": {
   "title": "Home Screen"

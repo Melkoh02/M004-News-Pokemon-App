@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Text} from 'react-native-paper';
 import {useTheme} from '../lib/hooks/useAppTheme.ts';
 import {useTranslation} from 'react-i18next';
 import useApi from '../lib/hooks/useApi.ts';
@@ -9,6 +9,8 @@ import NewsCard from '../components/organisms/newsCard.tsx';
 import {Article} from '../lib/types/article.ts';
 import {NEWS_PAGE_SIZE} from '../lib/constants/pagination.ts';
 import {NEWS_SOURCES} from '../lib/constants/newsSoruces.ts';
+
+const MIN_QUERY_CHARS = 2;
 
 // simple debounce hook
 function useDebouncedValue<T>(value: T, delayMs: number): T {
@@ -38,7 +40,10 @@ export default function NewsScreen() {
   // debounce to avoid hammering the API as the user types
   const debouncedQuery = useDebouncedValue(searchQuery, 400);
   const normalizedQuery = debouncedQuery.trim();
-  const q = normalizedQuery.length >= 2 ? normalizedQuery : undefined;
+  const isShortQuery =
+    normalizedQuery.length > 0 && normalizedQuery.length < MIN_QUERY_CHARS;
+  const q =
+    !isShortQuery && normalizedQuery.length ? normalizedQuery : undefined;
 
   // guard to avoid multiple onEndReached fires during momentum
   const canLoadMoreRef = useRef(true);
@@ -86,11 +91,9 @@ export default function NewsScreen() {
           page: pageToLoad,
           pageSize: NEWS_PAGE_SIZE,
           q: query,
-          searchIn: 'title',
         })
         .handle({
           onSuccess: res => {
-            // ignore stale responses
             if (rid !== requestIdRef.current) return;
 
             console.log('News API Called! page=', pageToLoad, 'q=', query);
@@ -102,7 +105,6 @@ export default function NewsScreen() {
           },
           errorMessage: t('snackBarMessages.getEverythingNewsError'),
           onFinally: () => {
-            if (rid !== requestIdRef.current) return;
             setInitialLoading(false);
             setLoadingMore(false);
             setRefreshing(false);
@@ -113,30 +115,53 @@ export default function NewsScreen() {
     [api, t],
   );
 
-  // initial load
   useEffect(() => {
-    fetchPage({pageToLoad: 1, append: false, query: q});
-  }, []);
+    if (isShortQuery) {
+      requestIdRef.current++;
 
-  // whenever the debounced query changes, reset to page 1 and refetch
-  useEffect(() => {
+      setInitialLoading(false);
+      setLoadingMore(false);
+      setRefreshing(false);
+      canLoadMoreRef.current = true;
+
+      setData([]);
+      setTotalResults(0);
+      setPage(1);
+      return;
+    }
+
     setTotalResults(null);
+    setData([]);
     fetchPage({pageToLoad: 1, append: false, query: q});
-  }, [q, fetchPage]);
+  }, [isShortQuery, q, fetchPage]);
 
   const loadMore = useCallback(() => {
+    if (isShortQuery) return;
     if (!hasNext || initialLoading || loadingMore || refreshing) return;
     if (!canLoadMoreRef.current) return;
     canLoadMoreRef.current = false;
     fetchPage({pageToLoad: page + 1, append: true, query: q});
-  }, [fetchPage, hasNext, initialLoading, loadingMore, refreshing, page, q]);
+  }, [
+    fetchPage,
+    hasNext,
+    initialLoading,
+    loadingMore,
+    refreshing,
+    page,
+    q,
+    isShortQuery,
+  ]);
 
   const onRefresh = useCallback(() => {
+    if (isShortQuery) {
+      setRefreshing(false);
+      return;
+    }
     if (initialLoading || loadingMore) return;
     setRefreshing(true);
     setTotalResults(null);
     fetchPage({pageToLoad: 1, append: false, query: q});
-  }, [fetchPage, initialLoading, loadingMore, q]);
+  }, [fetchPage, initialLoading, loadingMore, q, isShortQuery]);
 
   return (
     <>
@@ -165,7 +190,7 @@ export default function NewsScreen() {
                 url={item.urlToImage}
               />
             )}
-            contentContainerStyle={{padding: 16}}
+            contentContainerStyle={{padding: 16, flexGrow: 1}}
             onEndReached={loadMore}
             onEndReachedThreshold={0.5}
             onMomentumScrollBegin={() => {
@@ -180,9 +205,15 @@ export default function NewsScreen() {
             onRefresh={onRefresh}
             removeClippedSubviews
             ListEmptyComponent={
-              !initialLoading && normalizedQuery && data.length === 0 ? (
-                <View style={{padding: 24}}>
-                  <ActivityIndicator size={0} />
+              !initialLoading ? (
+                <View style={{padding: 24, alignItems: 'center'}}>
+                  <Text style={{opacity: 0.7, textAlign: 'center'}}>
+                    {isShortQuery
+                      ? t('news.minSearch', {count: MIN_QUERY_CHARS})
+                      : normalizedQuery
+                      ? t('news.noResultsSearch', {query: normalizedQuery})
+                      : t('news.emptyList')}
+                  </Text>
                 </View>
               ) : null
             }

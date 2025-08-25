@@ -53,7 +53,10 @@
   "speed": "Velocidad"
  },
  "news": {
-  "searchBarPlaceHolder": "Buscar Noticias"
+  "searchBarPlaceHolder": "Buscar Noticias",
+  "minSearch": "Escribe al menos {count} caracteres para buscar",
+  "noResultsSearch": "No se encontraron noticias para {query}. Prueba con otra búsqueda o continúa escribiendo.",
+  "emptyList": "No hay artículos disponibles"
  },
  "home": {
   "title": "Pantalla de Inicio"
