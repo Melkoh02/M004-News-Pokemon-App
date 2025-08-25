@@ -1,5 +1,10 @@
 import React from 'react';
-import {Keyboard, StyleSheet, View} from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {useTheme} from '../lib/hooks/useAppTheme.ts';
 import {useTranslation} from 'react-i18next';
 import useApi from '../lib/hooks/useApi.ts';
@@ -61,53 +66,55 @@ export default function SignUpScreen() {
   });
 
   return (
-    <View
-      style={{
-        ...styles.container,
-        backgroundColor: theme.colors.background,
-      }}>
-      <Text variant="headlineLarge" style={styles.title}>
-        {t('signUp.title')}
-      </Text>
-      <FormikProvider value={formik}>
-        <View style={styles.fields}>
-          <Field
-            component={FormikEmailInput}
-            name="email"
-            label={t('signUp.email')}
-            placeholder={t('signUp.emailPlaceholder')}
-          />
-          <Field
-            component={FormikPasswordInput}
-            name="password"
-            label={t('signUp.password')}
-            placeholder={t('signUp.passwordPlaceholder')}
-          />
-          <Field
-            component={FormikPasswordInput}
-            name="confirmPassword"
-            label={t('signUp.confirmPassword')}
-            placeholder={t('signUp.confirmPasswordPlaceholder')}
-          />
-          <Button
-            mode="contained"
-            onPress={onSignUpPress}
-            loading={loading}
-            disabled={loading}
-            style={styles.button}>
-            {!loading && t('signUp.signUpButton')}
-          </Button>
-        </View>
-        <View style={styles.footer}>
-          <Text style={{color: theme.colors.onBackground}}>
-            {t('signUp.backToLogin')}
-          </Text>
-          <Button mode="text" onPress={() => navigation.goBack()}>
-            {t('login.loginButton')}
-          </Button>
-        </View>
-      </FormikProvider>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: theme.colors.background,
+        }}>
+        <Text variant="headlineLarge" style={styles.title}>
+          {t('signUp.title')}
+        </Text>
+        <FormikProvider value={formik}>
+          <View style={styles.fields}>
+            <Field
+              component={FormikEmailInput}
+              name="email"
+              label={t('signUp.email')}
+              placeholder={t('signUp.email')}
+            />
+            <Field
+              component={FormikPasswordInput}
+              name="password"
+              label={t('signUp.password')}
+              placeholder={t('signUp.password')}
+            />
+            <Field
+              component={FormikPasswordInput}
+              name="confirmPassword"
+              label={t('signUp.confirmPassword')}
+              placeholder={t('signUp.confirmPassword')}
+            />
+            <Button
+              mode="contained"
+              onPress={onSignUpPress}
+              loading={loading}
+              disabled={loading}
+              style={styles.button}>
+              {!loading && t('signUp.signUpButton')}
+            </Button>
+          </View>
+          <View style={styles.footer}>
+            <Text style={{color: theme.colors.onBackground}}>
+              {t('signUp.backToLogin')}
+            </Text>
+            <Button mode="text" onPress={() => navigation.goBack()}>
+              {t('login.loginButton')}
+            </Button>
+          </View>
+        </FormikProvider>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

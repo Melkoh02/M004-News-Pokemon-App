@@ -1,5 +1,10 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {useTheme} from '../lib/hooks/useAppTheme.ts';
 import {useTranslation} from 'react-i18next';
 import useApi from '../lib/hooks/useApi.ts';
@@ -49,61 +54,40 @@ export default function ForgotPassword() {
     onSubmit: onSubmitPress,
   });
 
-  // dummy data for the example implementation of FormikSelectInput
-  // const dummyOptions = [
-  //   {
-  //     id: 1,
-  //     value: 'Option 1',
-  //   },
-  //   {
-  //     id: 2,
-  //     value: 'Option 2',
-  //   },
-  //   {
-  //     id: 3,
-  //     value: 'Option 3',
-  //   },
-  // ];
-
   return (
-    <View
-      style={{
-        ...styles.container,
-        backgroundColor: theme.colors.background,
-      }}>
-      <Text variant="headlineLarge" style={styles.title}>
-        {t('forgotPassword.title')}
-      </Text>
-      <FormikProvider value={formik}>
-        <View style={styles.fields}>
-          <Field
-            component={FormikEmailInput}
-            name="email"
-            label={t('forgotPassword.email')}
-            placeholder={t('forgotPassword.email')}
-          />
-          {/* Example Implementation of FormikSelectInput*/}
-          {/*<Field*/}
-          {/*  component={FormikSelectInput}*/}
-          {/*  name="selectTest"*/}
-          {/*  placeholder={'Pick one option'}*/}
-          {/*  options={dummyOptions}*/}
-          {/*/>*/}
-          <Button
-            mode="contained"
-            onPress={onSubmitPress}
-            loading={loading}
-            style={styles.button}>
-            {!loading && t('forgotPassword.submitButton')}
-          </Button>
-        </View>
-        <View style={styles.footer}>
-          <Button mode="text" onPress={() => navigation.goBack()} style={{}}>
-            {t('forgotPassword.backToLogin')}
-          </Button>
-        </View>
-      </FormikProvider>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: theme.colors.background,
+        }}>
+        <Text variant="headlineLarge" style={styles.title}>
+          {t('forgotPassword.title')}
+        </Text>
+        <FormikProvider value={formik}>
+          <View style={styles.fields}>
+            <Field
+              component={FormikEmailInput}
+              name="email"
+              label={t('forgotPassword.email')}
+              placeholder={t('forgotPassword.email')}
+            />
+            <Button
+              mode="contained"
+              onPress={onSubmitPress}
+              loading={loading}
+              style={styles.button}>
+              {!loading && t('forgotPassword.submitButton')}
+            </Button>
+          </View>
+          <View style={styles.footer}>
+            <Button mode="text" onPress={() => navigation.goBack()} style={{}}>
+              {t('forgotPassword.backToLogin')}
+            </Button>
+          </View>
+        </FormikProvider>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
