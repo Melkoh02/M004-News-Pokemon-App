@@ -13,6 +13,7 @@ export default function NewsCard({
   sourceName,
   author,
   publishedAt,
+  onPress,
 }: NewsCardProps) {
   const theme = useTheme();
   const {t} = useTranslation();
@@ -29,7 +30,7 @@ export default function NewsCard({
   }, [title, linkUrl]);
 
   return (
-    <Card style={styles.card} mode="elevated">
+    <Card style={styles.card} mode="elevated" onPress={onPress}>
       <Card.Cover
         source={{uri: imageUrl || 'https://picsum.photos/900/600'}}
         style={styles.cover}

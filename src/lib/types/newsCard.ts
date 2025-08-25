@@ -6,4 +6,5 @@ export type NewsCardProps = {
   sourceName?: string;
   author?: string | null;
   publishedAt?: string;
+  onPress?: () => void;
 };

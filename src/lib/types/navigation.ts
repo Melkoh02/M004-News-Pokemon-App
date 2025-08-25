@@ -1,6 +1,7 @@
 import {CompositeNavigationProp} from '@react-navigation/native';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {Article} from './article.ts';
 
 export type DrawerParamList = {
   MainTabs: undefined;
@@ -26,6 +27,7 @@ export type AuthStackParamList = {
 
 export type NewsStackParamList = {
   News: undefined;
+  NewsDetailScreen: {article: Article};
 };
 
 export type PokemonStackParamList = {

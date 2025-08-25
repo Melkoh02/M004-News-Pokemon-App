@@ -9,6 +9,7 @@ import NewsCard from '../components/organisms/newsCard.tsx';
 import {Article} from '../lib/types/article.ts';
 import {NEWS_PAGE_SIZE} from '../lib/constants/pagination.ts';
 import {NEWS_SOURCES} from '../lib/constants/newsSoruces.ts';
+import {useNavigation} from '../lib/hooks/useNavigation.ts';
 
 const MIN_QUERY_CHARS = 2;
 
@@ -26,6 +27,7 @@ export default function NewsScreen() {
   const theme = useTheme();
   const {t} = useTranslation();
   const api = useApi();
+  const navigation = useNavigation('NewsStack');
 
   const [data, setData] = useState<Article[]>([]);
   const [page, setPage] = useState(1);
@@ -192,6 +194,9 @@ export default function NewsScreen() {
                 sourceName={item.source?.name}
                 author={item.author}
                 publishedAt={item.publishedAt}
+                onPress={() => {
+                  navigation.navigate('NewsDetailScreen', {article: item});
+                }}
               />
             )}
             contentContainerStyle={{padding: 16, flexGrow: 1}}
