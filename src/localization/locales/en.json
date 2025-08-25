@@ -51,6 +51,9 @@
   "defense": "Defense",
   "speed": "Speed"
  },
+ "news": {
+  "searchBarPlaceHolder": "Search News"
+ },
  "home": {
   "title": "Home Screen"
  },

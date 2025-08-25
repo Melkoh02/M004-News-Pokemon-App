@@ -52,6 +52,9 @@
   "defense": "Defensa",
   "speed": "Velocidad"
  },
+ "news": {
+  "searchBarPlaceHolder": "Buscar Noticias"
+ },
  "home": {
   "title": "Pantalla de Inicio"
  },

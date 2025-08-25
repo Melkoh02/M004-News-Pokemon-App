@@ -26,11 +26,13 @@ export const getTopHeadlines = (params: {
 
 export const getEverythingNews = (params: {
   q?: string;
+  language?: string;
   from?: string; // ISO date
   to?: string; // ISO date
   sortBy?: 'relevancy' | 'popularity' | 'publishedAt';
   pageSize?: number;
   page?: number;
+  sources?: string[];
 }) => wrapRequest(newsClient.get('everything', {params}));
 
 // ---------- PokeAPI ----------

@@ -43,7 +43,6 @@ export default function PokemonScreen() {
 
       api.listPokemon({limit: PAGE_SIZE, offset: off}).handle({
         onSuccess: res => {
-          console.log('Api called!');
           const moreComing = Boolean(res.next);
           setHasNext(moreComing);
 
