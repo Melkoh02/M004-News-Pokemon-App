@@ -70,7 +70,7 @@ For instructions on preparing your own system, see the official React Native gui
 * **Node**: ≥ 18 (tested with v22.15)
 * **Java**: 17 (OpenJDK)
 * **Android SDK**: Installed + `ANDROID_HOME` configured
-* **Yarn**: 1.x
+* **Yarn**: 1.22.22
 
 Example `.zshrc` snippet:
 
