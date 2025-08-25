@@ -11,14 +11,16 @@ import useApi from '../lib/hooks/useApi.ts';
 import {Field, FormikProvider, useFormik} from 'formik';
 import * as Yup from 'yup';
 import FormikEmailInput from '../components/formik/FormikEmailInput.tsx';
-import {Button, Text} from 'react-native-paper';
+import {Button, IconButton, Text} from 'react-native-paper';
 import {useNavigation} from '../lib/hooks/useNavigation.ts';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function ForgotPassword() {
   const theme = useTheme();
   const {t} = useTranslation();
   const api = useApi();
   const navigation = useNavigation('AuthStack');
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = React.useState(false);
 
   const forgotPassword = (data: {email: string}) => {
@@ -61,6 +63,12 @@ export default function ForgotPassword() {
           ...styles.container,
           backgroundColor: theme.colors.background,
         }}>
+        <IconButton
+          icon="arrow-left"
+          size={28}
+          onPress={() => navigation.goBack()}
+          style={{position: 'absolute', top: insets.top, left: 8}}
+        />
         <Text variant="headlineLarge" style={styles.title}>
           {t('forgotPassword.title')}
         </Text>

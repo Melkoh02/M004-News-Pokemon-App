@@ -12,9 +12,10 @@ import {Field, FormikProvider, useFormik} from 'formik';
 import * as Yup from 'yup';
 import FormikEmailInput from '../components/formik/FormikEmailInput.tsx';
 import FormikPasswordInput from '../components/formik/FormikPasswordInput.tsx';
-import {Button, Text} from 'react-native-paper';
+import {Button, IconButton, Text} from 'react-native-paper';
 import {useStore} from '../lib/hooks/useStore.ts';
 import {useNavigation} from '@react-navigation/native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default function SignUpScreen() {
   const theme = useTheme();
@@ -22,6 +23,7 @@ export default function SignUpScreen() {
   const api = useApi();
   const rootStore = useStore();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = React.useState(false);
 
   const signUp = (data: {email: string; password: string}) => {
@@ -72,6 +74,12 @@ export default function SignUpScreen() {
           ...styles.container,
           backgroundColor: theme.colors.background,
         }}>
+        <IconButton
+          icon="arrow-left"
+          size={28}
+          onPress={() => navigation.goBack()}
+          style={{position: 'absolute', top: insets.top, left: 8}}
+        />
         <Text variant="headlineLarge" style={styles.title}>
           {t('signUp.title')}
         </Text>
