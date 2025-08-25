@@ -187,7 +187,11 @@ export default function NewsScreen() {
               <NewsCard
                 title={item.title}
                 description={item.description}
-                url={item.urlToImage}
+                imageUrl={item.urlToImage}
+                linkUrl={item.url}
+                sourceName={item.source?.name}
+                author={item.author}
+                publishedAt={item.publishedAt}
               />
             )}
             contentContainerStyle={{padding: 16, flexGrow: 1}}

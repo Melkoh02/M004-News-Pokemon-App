@@ -8,7 +8,42 @@
   "no": "No",
   "continue": "Continuar",
   "search": "Buscar",
-  "loading": "Cargando"
+  "loading": "Cargando",
+  "relative": {
+   "just_now": "ahora mismo",
+   "past": {
+    "second_one": "hace {{count}} segundo",
+    "second_other": "hace {{count}} segundos",
+    "minute_one": "hace {{count}} minuto",
+    "minute_other": "hace {{count}} minutos",
+    "hour_one": "hace {{count}} hora",
+    "hour_other": "hace {{count}} horas",
+    "day_one": "hace {{count}} día",
+    "day_other": "hace {{count}} días",
+    "week_one": "hace {{count}} semana",
+    "week_other": "hace {{count}} semanas",
+    "month_one": "hace {{count}} mes",
+    "month_other": "hace {{count}} meses",
+    "year_one": "hace {{count}} año",
+    "year_other": "hace {{count}} años"
+   },
+   "future": {
+    "second_one": "en {{count}} segundo",
+    "second_other": "en {{count}} segundos",
+    "minute_one": "en {{count}} minuto",
+    "minute_other": "en {{count}} minutos",
+    "hour_one": "en {{count}} hora",
+    "hour_other": "en {{count}} horas",
+    "day_one": "en {{count}} día",
+    "day_other": "en {{count}} días",
+    "week_one": "en {{count}} semana",
+    "week_other": "en {{count}} semanas",
+    "month_one": "en {{count}} mes",
+    "month_other": "en {{count}} meses",
+    "year_one": "en {{count}} año",
+    "year_other": "en {{count}} años"
+   }
+  }
  },
  "tabNavigator": {
   "home": "Noticas",

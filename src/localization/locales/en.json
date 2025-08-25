@@ -8,7 +8,42 @@
   "no": "No",
   "continue": "Continue",
   "search": "Search",
-  "loading": "Loading"
+  "loading": "Loading",
+  "relative": {
+   "just_now": "just now",
+   "past": {
+    "second_one": "{{count}} second ago",
+    "second_other": "{{count}} seconds ago",
+    "minute_one": "{{count}} minute ago",
+    "minute_other": "{{count}} minutes ago",
+    "hour_one": "{{count}} hour ago",
+    "hour_other": "{{count}} hours ago",
+    "day_one": "{{count}} day ago",
+    "day_other": "{{count}} days ago",
+    "week_one": "{{count}} week ago",
+    "week_other": "{{count}} weeks ago",
+    "month_one": "{{count}} month ago",
+    "month_other": "{{count}} months ago",
+    "year_one": "{{count}} year ago",
+    "year_other": "{{count}} years ago"
+   },
+   "future": {
+    "second_one": "in {{count}} second",
+    "second_other": "in {{count}} seconds",
+    "minute_one": "in {{count}} minute",
+    "minute_other": "in {{count}} minutes",
+    "hour_one": "in {{count}} hour",
+    "hour_other": "in {{count}} hours",
+    "day_one": "in {{count}} day",
+    "day_other": "in {{count}} days",
+    "week_one": "in {{count}} week",
+    "week_other": "in {{count}} weeks",
+    "month_one": "in {{count}} month",
+    "month_other": "in {{count}} months",
+    "year_one": "in {{count}} year",
+    "year_other": "in {{count}} years"
+   }
+  }
  },
  "tabNavigator": {
   "home": "News",
