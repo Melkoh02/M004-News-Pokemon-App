@@ -92,8 +92,7 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 yarn start     # Start Metro (keep open)
 yarn android   # Build & run on Android
 yarn ios       # (Optional) Run on iOS
-yarn lint      # Lint with ESLint
-yarn test      # Run Jest tests
+yarn eslint    # Lint with ESLint
 ```
 
 ---
