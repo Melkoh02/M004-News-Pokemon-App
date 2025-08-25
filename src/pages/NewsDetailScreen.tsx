@@ -12,12 +12,14 @@ import {
 import {Linking, Share} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {NewsStackParamList} from '../lib/types/navigation.ts';
+import {useTranslation} from 'react-i18next';
 
 type DetailRoute = RouteProp<NewsStackParamList, 'NewsDetailScreen'>;
 
 export default function NewsDetailScreen() {
   const theme = useTheme();
   const navigation = useNavigation();
+  const {t} = useTranslation();
   const {params} = useRoute<DetailRoute>();
   const article = params?.article;
 
@@ -37,17 +39,28 @@ export default function NewsDetailScreen() {
   const shareLink = useCallback(async () => {
     if (!article?.url) return;
     await Share.share({
-      title: article.title ?? 'News',
+      title: article.title ?? t('news.detail.share'),
       message: `${article.title ?? ''} ${article.url}`.trim(),
     });
-  }, [article?.title, article?.url]);
+  }, [article?.title, article?.url, t]);
+
+  // A more detailed would be possible, but a custom implementation would be
+  // needed to match every possible source available, as newsapi.org provides
+  // the URL to the original article, not their own structured response for a
+  // more detailed view of each article.
+  // Even if those custom implementations were in place, it would still fail
+  // from time to time, given that any change on the newspaper website format
+  // could in theory break our own, because of this, this "Detail" screen is
+  // limited to what is provided by newsapi.org
 
   return (
     <View
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <Appbar.Header mode="small" statusBarHeight={0}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title={article?.source?.name ?? 'News'} />
+        <Appbar.Content
+          title={article?.source?.name ?? t('tabNavigator.home')}
+        />
         {article?.url ? (
           <Appbar.Action icon="share-variant" onPress={shareLink} />
         ) : null}
@@ -62,7 +75,7 @@ export default function NewsDetailScreen() {
 
         <View style={styles.section}>
           <Text variant="titleLarge" style={styles.title}>
-            {article?.title ?? 'Untitled'}
+            {article?.title ?? t('common.no')}
           </Text>
 
           <View style={styles.metaRow}>
@@ -73,14 +86,14 @@ export default function NewsDetailScreen() {
             ) : null}
             {formattedDate ? (
               <Chip compact style={styles.chip} icon="calendar">
-                {formattedDate}
+                {t('news.detail.publishedAt')}: {formattedDate}
               </Chip>
             ) : null}
           </View>
 
           {article?.author ? (
             <Text variant="labelLarge" style={styles.author}>
-              {article.author}
+              {t('news.detail.author')}: {article.author}
             </Text>
           ) : null}
         </View>
@@ -102,7 +115,7 @@ export default function NewsDetailScreen() {
         <View style={styles.actions}>
           {article?.url ? (
             <Button mode="contained" onPress={openLink} icon="open-in-new">
-              Open source
+              {t('news.detail.openSource')}
             </Button>
           ) : null}
         </View>

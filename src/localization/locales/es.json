@@ -90,9 +90,15 @@
  },
  "news": {
   "searchBarPlaceHolder": "Buscar Noticias",
-  "minSearch": "Escribe al menos {count} caracteres para buscar",
-  "noResultsSearch": "No se encontraron noticias para {query}. Prueba con otra búsqueda o continúa escribiendo.",
-  "emptyList": "No hay artículos disponibles"
+  "minSearch": "Escribe al menos {{count}} caracteres para buscar",
+  "noResultsSearch": "No se encontraron noticias para {{query}}. Prueba con otra búsqueda o continúa escribiendo.",
+  "emptyList": "No hay artículos disponibles",
+  "detail": {
+   "author": "Autor",
+   "publishedAt": "Publicado el",
+   "openSource": "Abrir fuente",
+   "share": "Compartir"
+  }
  },
  "home": {
   "title": "Pantalla de Inicio"

@@ -98,6 +98,24 @@ export default function PokemonScreen() {
     return pokemons.filter(p => p.title.toLowerCase().includes(q));
   }, [pokemons, searchQuery]);
 
+  // The low amount of information on this screen is due to the PokeAPI providing
+  // only a name and a url, e.g.:
+  // {
+  //   "name": "bulbasaur",
+  //   "url": "https://pokeapi.co/api/v2/pokemon/1/"
+  // },
+  // {
+  //   "name": "ivysaur",
+  //   "url": "https://pokeapi.co/api/v2/pokemon/2/"
+  // },
+  // Because of this, the listing is showing 2 cards per row, to better handle
+  // space, a tool to get at least a picture was implemented on buildPokemonImageUrl.ts
+  // which makes use of the available images in the github page that happen to match
+  // the ids found on the PokeAPI endpoint response, in theory, similar things
+  // could be built to add more information, but such approach would significantly
+  // increase the hit on the APIs, so I decided against it, as this should serve as a
+  // good enough showcase for a demo application.
+
   return (
     <>
       {/*pokeAPI does not support any kind of search! so search implementation is limited to current data*/}

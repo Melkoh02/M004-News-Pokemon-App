@@ -91,7 +91,13 @@
   "searchBarPlaceHolder": "Search News",
   "minSearch": "Type at least {{count}} characters to search",
   "noResultsSearch": "No news found for \"{{query}}\". Try a different search or continue typing.",
-  "emptyList": "No articles available"
+  "emptyList": "No articles available",
+  "detail": {
+   "author": "Author",
+   "publishedAt": "Published at",
+   "openSource": "Open source",
+   "share": "Share"
+  }
  },
  "home": {
   "title": "Home Screen"
