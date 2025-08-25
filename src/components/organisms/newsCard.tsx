@@ -3,6 +3,7 @@ import {Share, StyleSheet, View} from 'react-native';
 import {Card, Chip, IconButton, Text, useTheme} from 'react-native-paper';
 import type {NewsCardProps} from '../../lib/types/newsCard';
 import {timeAgo} from '../../lib/helpers/timeAgo.ts';
+import {useTranslation} from 'react-i18next';
 
 export default function NewsCard({
   title,
@@ -14,7 +15,13 @@ export default function NewsCard({
   publishedAt,
 }: NewsCardProps) {
   const theme = useTheme();
+  const {t} = useTranslation();
+
   const ago = useMemo(() => timeAgo(publishedAt), [publishedAt]);
+  const formattedDate = useMemo(
+    () => (publishedAt ? new Date(publishedAt).toLocaleDateString() : ''),
+    [publishedAt],
+  );
 
   const share = useCallback(() => {
     const message = linkUrl ? `${title}\n${linkUrl}` : title;
@@ -41,17 +48,36 @@ export default function NewsCard({
               </Text>
             </Chip>
             {!!ago && (
-              <Text
-                style={[styles.dot, {color: theme.colors.onSurfaceVariant}]}>
-                •
-              </Text>
+              <>
+                <Text
+                  style={[styles.dot, {color: theme.colors.onSurfaceVariant}]}>
+                  •
+                </Text>
+                <Text
+                  style={[
+                    styles.subtle,
+                    {color: theme.colors.onSurfaceVariant},
+                  ]}
+                  numberOfLines={1}>
+                  {ago}
+                </Text>
+              </>
             )}
-            {!!ago && (
-              <Text
-                style={[styles.subtle, {color: theme.colors.onSurfaceVariant}]}
-                numberOfLines={1}>
-                {ago}
-              </Text>
+            {!!formattedDate && (
+              <>
+                <Text
+                  style={[styles.dot, {color: theme.colors.onSurfaceVariant}]}>
+                  •
+                </Text>
+                <Text
+                  style={[
+                    styles.subtle,
+                    {color: theme.colors.onSurfaceVariant},
+                  ]}
+                  numberOfLines={1}>
+                  {formattedDate}
+                </Text>
+              </>
             )}
           </View>
         }
@@ -65,14 +91,13 @@ export default function NewsCard({
 
       <Card.Actions style={styles.actions}>
         <View style={styles.bylineWrap}>
-          {(author || publishedAt) && (
+          {!!author && (
             <Text
               variant="bodySmall"
               style={[styles.byline, {color: theme.colors.onSurfaceVariant}]}
-              numberOfLines={2}>
-              {author ? `By ${author}` : ''}
-              {author && publishedAt ? '  ·  ' : ''}
-              {publishedAt ? new Date(publishedAt).toLocaleDateString() : ''}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {`${t('common.by')} ${author}`}
             </Text>
           )}
         </View>
@@ -110,9 +135,10 @@ const styles = StyleSheet.create({
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    columnGap: 8,
+    rowGap: 6,
     marginTop: 4,
-    gap: 8,
-    flexWrap: 'nowrap',
   },
   sourceChip: {
     maxWidth: '70%',
@@ -121,19 +147,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     alignSelf: 'flex-start',
   },
-  sourceChipContent: {
-    paddingHorizontal: 8,
-    alignItems: 'center',
-    height: 26,
-  },
   dot: {marginTop: -1},
   subtle: {fontSize: 13},
-  content: {paddingTop: 2},
+  content: {paddingTop: 8},
   actions: {
     paddingRight: 4,
     paddingBottom: 6,
     alignItems: 'center',
+    flexDirection: 'row',
   },
-  bylineWrap: {flex: 1, paddingLeft: 6},
-  byline: {marginTop: 2},
+  bylineWrap: {
+    flex: 1,
+    paddingLeft: 2,
+    minWidth: 0,
+  },
+  byline: {
+    marginTop: 2,
+    flexShrink: 1,
+  },
 });

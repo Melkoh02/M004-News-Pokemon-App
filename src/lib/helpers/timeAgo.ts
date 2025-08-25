@@ -1,4 +1,3 @@
-// timeAgo.ts
 import i18n from 'i18next';
 
 type Unit = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
