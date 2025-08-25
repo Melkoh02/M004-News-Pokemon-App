@@ -33,8 +33,8 @@ export default function LoginScreen() {
   };
 
   const initialValues = {
-    email: 'admin@admin.com',
-    password: 'admin',
+    email: '',
+    password: '',
   };
 
   const validationSchema = Yup.object({

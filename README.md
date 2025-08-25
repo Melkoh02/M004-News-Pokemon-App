@@ -1,97 +1,214 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# M004 — News & Pokémon (React Native)
 
-# Getting Started
+A TypeScript-first React Native app showcasing a clean architecture with:
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- 🎨 **Custom theming** (MD3 via React Native Paper, light/dark with persistence)
+- 🌐 **Localization (i18n)** with English/Spanish support and AsyncStorage persistence
+- 📦 **MobX stores** for state management (auth, theme, language, UI, logs)
+- 🌍 **Axios API layer** with multi-client setup, `.handle()` wrapper, JWT headers, and snackbars
+- 📝 **Formik forms** with custom React Native Paper components + Yup validation
+- 🔐 **Full auth flow** (login, signup, reset, logout and guest mode) with JWT persistence
+- 🧩 **Atomic design structure** with helpers, hooks, services, and clean separation of concerns
+- 🧭 **Custom navigation** integrating Paper with multiple stacks, bottom tabs, and a drawer
 
-## Step 1: Start Metro
+<p align="center">
+  <img src="docs/screenshots/home_news_dark.png" width="30%" />
+  <img src="docs/screenshots/pokemon_list_light.png" width="30%" />
+  <img src="docs/screenshots/drawer_light.png" width="30%" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/login_light.png" width="30%" />
+  <img src="docs/screenshots/signup_dark.png" width="30%" />
+  <img src="docs/screenshots/pokemon_detail_dark.png" width="30%" />
+</p>
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## 🚀 Quick Start
 
-```sh
-# Using npm
-npm start
+```bash
+# 1) Clone
+git clone git@github.com:Melkoh02/M004-News-Pokemon-App.git
+cd M004-News-Pokemon-App
 
-# OR using Yarn
+# 2) Install dependencies
+yarn install
+
+# 3) Setup environment variables
+cp .env.example .env    # then edit API_KEY_NEWS and others as needed
+
+# 4) Start Metro (keep this terminal open)
 yarn start
-```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
+# 5) In another terminal, build & run Android
 yarn android
+````
+
+👉 The `.env.example` file is already in the repo:
+
+```dotenv
+# duplicate this file and remove the '.example' part / duplicar este archivo y sacarle la parte '.example' del nombre
+
+# replace this one / cambiar esta clave
+API_KEY_NEWS=3c****************************0c
+
+# these can stay as they are / estas variables pueden quedarse como estan
+API_BASE_URL_BACKEND=http://***.***.***.***:8000/api/v1
+API_BASE_URL_NEWS=https://newsapi.org/v2/
+API_BASE_URL_POKEMON=https://pokeapi.co/api/v2/
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## 🛠 Development/Tested Environment
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+This project was developed and tested under the following setup.  
+For instructions on preparing your own system, see the official React Native guide (highly recommended!):  
+👉 [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment)
 
-```sh
-bundle install
+* **OS**: Ubuntu 24.04 (dev machine)
+* **Node**: ≥ 18 (tested with v22.15)
+* **Java**: 17 (OpenJDK)
+* **Android SDK**: Installed + `ANDROID_HOME` configured
+* **Yarn**: 1.x
+
+Example `.zshrc` snippet:
+
+```bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 ```
 
-Then, and every time you update your native dependencies, run:
+---
 
-```sh
-bundle exec pod install
+## 📜 Scripts
+
+```bash
+yarn start     # Start Metro (keep open)
+yarn android   # Build & run on Android
+yarn ios       # (Optional) Run on iOS
+yarn lint      # Lint with ESLint
+yarn test      # Run Jest tests
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## ✨ Features
 
-# OR using Yarn
-yarn ios
+* **Theming**
+
+    * Extends MD3 themes with custom colors (`light.ts`, `dark.ts`, `custom.ts`, `sharedColors.ts`)
+    * User preference persisted in AsyncStorage
+    * Typed `useAppTheme` hook for DX
+
+* **Localization**
+
+    * i18next + react-i18next + react-native-localize
+    * English (`en.json`) and Spanish (`es.json`)
+    * Drawer toggle + device auto-detection
+
+* **State Management**
+
+    * MobX + mobx-react-lite
+    * Stores: `rootStore`, `userStore`, `themeStore`, `languageStore`, `uiStore`, `logStore`
+
+* **API Layer**
+
+    * Axios clients (`client.ts`, `endpoints.ts`)
+    * Custom `.handle()` wrapper
+    * Automatic JWT injection from `userStore`
+    * Snackbars for success/error
+
+* **Forms**
+
+    * Formik + Yup
+    * Custom Paper inputs (`BaseFormikInput`, `FormikTextInput`)
+    * Consistent styling + validation
+
+* **Authentication**
+
+    * Login / Signup / Forgot Password / Logout / Guest Mode
+    * JWT token
+    * Auto-attached to requests
+    * Secure logout clears storage
+
+* **Navigation**
+
+    * `@react-navigation/native` + stacks + bottom tabs
+    * Stacks: `AuthStack`, `NewsStack`, `PokemonStack`
+    * TabNavigator integrates MD3 look with Paper
+    * Drawer with theme & language toggles, useful links
+
+* **Good Practices**
+
+    * Atomic design
+    * Helpers/hooks (`timeAgo.ts`, `toggleLanguage.ts`, `useApi.ts`, etc.)
+    * Typed API models and theming
+    * Clear folder separation
+
+---
+
+## 📂 Project Structure
+
+```plaintext
+src/
+  api/            # Axios clients & endpoints
+  assets/         # Fonts and images
+  components/     # Atomic components (cards, inputs, modals, drawer, etc.)
+  lib/            # Reusable logic split into:
+    constants/    # Static constants
+    helpers/      # Utility functions
+    hooks/        # Custom hooks
+    providers/    # Global providers
+    stores/       # MobX stores
+    types/        # Shared TypeScript types
+  localization/   # i18n setup with locales (en.json, es.json)9
+  pages/          # Screen components (Auth, News, Pokemon)
+  routes/         # Navigation stacks, tabs, and route config
+  styles/         # Global styling (spacing, globals.css)
+  themes/         # Light/Dark/Custom themes + shared colors
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## ⚙️ Development Tips
 
-## Step 3: Modify your app
+* Always run `yarn install` after adding new deps
+* **Metro**: keep `yarn start` running in one terminal
+* **Android build**: `yarn android` in a separate terminal
+* Reset Metro cache if needed:
 
-Now that you have successfully run the app, let's make changes!
+  ```bash
+  rm -rf $TMPDIR/metro-* && yarn start --reset-cache
+  ```
+* Emulator debugging: `adb devices`
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+---
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## ❓ Troubleshooting
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+* **Build errors** → verify **Java 17** and **Android SDK** paths
+* **Env not applied** → after editing `.env`, rebuild (`yarn android`)
+* **Network issues** → check `API_BASE_URL_*` values and emulator network
+* **Contact Dev** → contact@melkoh.dev
 
-## Congratulations! :tada:
+---
 
-You've successfully run and modified your React Native App. :partying_face:
+## 🙌 Credits
 
-### Now what?
+* [React Native](https://reactnative.dev)
+* [React Native Paper](https://callstack.github.io/react-native-paper/)
+* [MobX](https://mobx.js.org/)
+* [React Navigation](https://reactnavigation.org/)
+* [i18next](https://www.i18next.com/)
+* [Formik](https://formik.org/) + [Yup](https://github.com/jquense/yup)
+* [Axios](https://axios-http.com/)
+* [PokeAPI](https://pokeapi.co/)
+* [NewsAPI](https://newsapi.org/)
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+---

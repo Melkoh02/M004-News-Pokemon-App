@@ -34,9 +34,9 @@ export default function SignUpScreen() {
   };
 
   const initialValues = {
-    email: 'test0@melkoh.dev',
-    password: 'Password123@',
-    confirmPassword: 'Password123@',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
   const validationSchema = Yup.object({
