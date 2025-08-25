@@ -7,17 +7,18 @@ import useApi from '../lib/hooks/useApi.ts';
 import MainSearchBar from '../components/molecules/searchBar.tsx';
 import NewsCard from '../components/organisms/newsCard.tsx';
 import {Article} from '../lib/types/article.ts';
+import {NEWS_PAGE_SIZE} from '../lib/constants/pagination.ts';
+import {NEWS_SOURCES} from '../lib/constants/newsSoruces.ts';
 
-const PAGE_SIZE = 20;
-const SOURCES = [
-  'abc-news',
-  'ars-technica',
-  'cnn',
-  'cbs-news',
-  'bloomberg',
-  'business-insider',
-  'espn',
-];
+// simple debounce hook
+function useDebouncedValue<T>(value: T, delayMs: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), delayMs);
+    return () => clearTimeout(id);
+  }, [value, delayMs]);
+  return debounced;
+}
 
 export default function NewsScreen() {
   const theme = useTheme();
@@ -34,8 +35,16 @@ export default function NewsScreen() {
 
   const [searchQuery, setSearchQuery] = useState('');
 
+  // debounce to avoid hammering the API as the user types
+  const debouncedQuery = useDebouncedValue(searchQuery, 400);
+  const normalizedQuery = debouncedQuery.trim();
+  const q = normalizedQuery.length >= 2 ? normalizedQuery : undefined;
+
   // guard to avoid multiple onEndReached fires during momentum
   const canLoadMoreRef = useRef(true);
+
+  // request ID so late responses don't clobber current data
+  const requestIdRef = useRef(0);
 
   const hasNext = useMemo(() => {
     if (totalResults == null) return true;
@@ -56,28 +65,44 @@ export default function NewsScreen() {
   };
 
   const fetchPage = useCallback(
-    ({pageToLoad, append}: {pageToLoad: number; append: boolean}) => {
-      append ? setLoadingMore(true) : setInitialLoading(true);
+    ({
+      pageToLoad,
+      append,
+      query,
+    }: {
+      pageToLoad: number;
+      append: boolean;
+      query?: string;
+    }) => {
+      const isAppend = append;
+      isAppend ? setLoadingMore(true) : setInitialLoading(true);
+
+      const rid = ++requestIdRef.current;
 
       api
         .getEverythingNews({
           language: 'en',
-          sources: SOURCES,
+          sources: NEWS_SOURCES,
           page: pageToLoad,
-          pageSize: PAGE_SIZE,
+          pageSize: NEWS_PAGE_SIZE,
+          q: query,
+          searchIn: 'title',
         })
         .handle({
           onSuccess: res => {
-            console.log('News API Called! page=', pageToLoad);
-            setTotalResults(res.totalResults ?? null);
+            // ignore stale responses
+            if (rid !== requestIdRef.current) return;
 
+            console.log('News API Called! page=', pageToLoad, 'q=', query);
+            setTotalResults(res.totalResults ?? null);
             setData(prev =>
-              append ? mergeUnique(prev, res.articles) : res.articles,
+              isAppend ? mergeUnique(prev, res.articles) : res.articles,
             );
             setPage(pageToLoad);
           },
           errorMessage: t('snackBarMessages.getEverythingNewsError'),
           onFinally: () => {
+            if (rid !== requestIdRef.current) return;
             setInitialLoading(false);
             setLoadingMore(false);
             setRefreshing(false);
@@ -90,25 +115,28 @@ export default function NewsScreen() {
 
   // initial load
   useEffect(() => {
-    fetchPage({pageToLoad: 1, append: false});
-  }, [fetchPage]);
+    fetchPage({pageToLoad: 1, append: false, query: q});
+  }, []);
+
+  // whenever the debounced query changes, reset to page 1 and refetch
+  useEffect(() => {
+    setTotalResults(null);
+    fetchPage({pageToLoad: 1, append: false, query: q});
+  }, [q, fetchPage]);
 
   const loadMore = useCallback(() => {
     if (!hasNext || initialLoading || loadingMore || refreshing) return;
     if (!canLoadMoreRef.current) return;
     canLoadMoreRef.current = false;
-
-    // next page is current page + 1
-    fetchPage({pageToLoad: page + 1, append: true});
-  }, [fetchPage, hasNext, initialLoading, loadingMore, refreshing, page]);
+    fetchPage({pageToLoad: page + 1, append: true, query: q});
+  }, [fetchPage, hasNext, initialLoading, loadingMore, refreshing, page, q]);
 
   const onRefresh = useCallback(() => {
     if (initialLoading || loadingMore) return;
     setRefreshing(true);
     setTotalResults(null);
-    // reset to page 1
-    fetchPage({pageToLoad: 1, append: false});
-  }, [fetchPage, initialLoading, loadingMore]);
+    fetchPage({pageToLoad: 1, append: false, query: q});
+  }, [fetchPage, initialLoading, loadingMore, q]);
 
   return (
     <>
@@ -151,6 +179,13 @@ export default function NewsScreen() {
             refreshing={refreshing}
             onRefresh={onRefresh}
             removeClippedSubviews
+            ListEmptyComponent={
+              !initialLoading && normalizedQuery && data.length === 0 ? (
+                <View style={{padding: 24}}>
+                  <ActivityIndicator size={0} />
+                </View>
+              ) : null
+            }
           />
         )}
       </View>

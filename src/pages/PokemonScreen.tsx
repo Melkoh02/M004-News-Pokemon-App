@@ -11,8 +11,7 @@ import {buildPokemonImageUrl} from '../lib/helpers/buildPokemonImageUrl.ts';
 import PokemonCard from '../components/organisms/pokemonCard.tsx';
 import {Pokemon} from '../lib/types/pokemon.ts';
 import {useNavigation} from '../lib/hooks/useNavigation.ts';
-
-const PAGE_SIZE = 20;
+import {POKEMON_PAGE_SIZE} from '../lib/constants/pagination.ts';
 
 export default function PokemonScreen() {
   const theme = useTheme();
@@ -41,13 +40,13 @@ export default function PokemonScreen() {
         return;
       }
 
-      api.listPokemon({limit: PAGE_SIZE, offset: off}).handle({
+      api.listPokemon({limit: POKEMON_PAGE_SIZE, offset: off}).handle({
         onSuccess: res => {
           const moreComing = Boolean(res.next);
           setHasNext(moreComing);
 
           setData(prev => (append ? [...prev, ...res.results] : res.results));
-          setOffset(off + PAGE_SIZE); // advance for the next call
+          setOffset(off + POKEMON_PAGE_SIZE); // advance for the next call
         },
         errorMessage: t('snackBarMessages.listPokemonError'),
         onFinally: () => {

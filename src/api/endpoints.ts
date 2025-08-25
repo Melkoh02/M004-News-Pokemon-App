@@ -33,6 +33,7 @@ export const getEverythingNews = (params: {
   pageSize?: number;
   page?: number;
   sources?: string[];
+  searchIn?: string;
 }) => wrapRequest(newsClient.get('everything', {params}));
 
 // ---------- PokeAPI ----------
