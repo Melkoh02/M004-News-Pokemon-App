@@ -58,6 +58,9 @@ API_BASE_URL_NEWS=https://newsapi.org/v2/
 API_BASE_URL_POKEMON=https://pokeapi.co/api/v2/
 ```
 
+Once the app starts and the login screen appears, proceed by clicking the "Continue as Guest" button,
+Auth flow works but requires the DRF Backend [M002](https://github.com/Melkoh02/M002) to be running.
+
 ---
 
 ## 🛠 Development/Tested Environment
@@ -209,5 +212,6 @@ src/
 * [Axios](https://axios-http.com/)
 * [PokeAPI](https://pokeapi.co/)
 * [NewsAPI](https://newsapi.org/)
+* [M001 - React Native Base App](https://github.com/Melkoh02/M001)
 
 ---
